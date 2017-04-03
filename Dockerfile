@@ -4,7 +4,7 @@ RUN apk apk update
 # Installing dependencies for PHP extensions
 RUN apk add freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev libedit-dev libxml2-dev curl-dev
 # Installing dependencies for compile gd
-RUN apk add m4 perl autoconf libmagic file libgcc libstdc++ binutils-libs binutils gmp  libgomp libatomic mpfr3  gcc musl-dev libc-dev g++ make re2c
+RUN apk add m4 perl autoconf libmagic file libgcc libstdc++ binutils-libs binutils gmp  libgomp libatomic mpfr3  gcc musl-dev libc-dev g++ make re2c libmcrypt
 # Installing dependencies for XDebug
 RUN apk add ca-certificates openssl
 RUN update-ca-certificates
