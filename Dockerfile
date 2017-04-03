@@ -17,7 +17,7 @@ RUN docker-php-ext-configure gd \
     --with-jpeg-dir=/usr/include/
 
 # Installing PHP extensions
-RUN docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) \
+RUN docker-php-ext-install \
     gd iconv opcache readline soap xml mysqli curl json mcrypt curl mbstring zip
 
 # Installing Xdebug
