@@ -20,8 +20,8 @@ RUN docker-php-ext-install \
     gd iconv opcache readline soap xml mysqli curl json mcrypt curl mbstring zip
 
 # Installing redis and  Xdebug
-RUN pecl install redis-3.1.0 \
-    && pecl install xdebug-2.5.0 \
+RUN pecl install redis \
+    && pecl install xdebug \
     && docker-php-ext-enable redis xdebug
 
 # Set Workdir
