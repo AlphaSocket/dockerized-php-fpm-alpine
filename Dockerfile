@@ -1,4 +1,4 @@
-FROM php:X-fpm-alpine
+FROM php:7-fpm-alpine
 # Updating repo
 RUN apk apk update
 # Installing
