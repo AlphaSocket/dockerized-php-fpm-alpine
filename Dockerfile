@@ -1,4 +1,4 @@
-FROM php:7-fpm-alpine
+FROM php:7.0-fpm-alpine
 
 ADD setup.sh setup.sh
 RUN chmod +rx setup.sh && sync && ./setup.sh
