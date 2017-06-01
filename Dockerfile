@@ -1,4 +1,4 @@
-FROM php:X-fpm-alpine
+FROM php:5.6-fpm-alpine
 
 COPY setup.sh /bin/setup.sh
 RUN setup.sh
