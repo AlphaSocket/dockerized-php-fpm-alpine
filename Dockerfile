@@ -1,7 +1,7 @@
 FROM php:X-fpm-alpine
 
-COPY setup.sh /bin/setup.sh
-RUN setup.sh
+ADD setup.sh setup.sh
+RUN chmod +rx setup.sh && sync && ./setup.sh
 
 # php & xdebug port
 EXPOSE 9000 9999
