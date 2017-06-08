@@ -33,10 +33,8 @@ pecl install redis
 pecl install xdebug
 docker-php-ext-enable redis xdebug
 
-# Cleaning cache
-apk cache clean
 # Removing unused binaries
-apk remove m4 perl autoconf libmagic file libgcc libstdc++ binutils-libs binutils gmp libgomp libatomic mpfr3 gcc musl-dev libc-dev g++ make re2c libmcrypt-dev
+apk del m4 perl autoconf libmagic file libgcc libstdc++ binutils-libs binutils gmp libgomp libatomic mpfr3 gcc musl-dev libc-dev g++ make re2c libmcrypt-dev
 
 # Set Workdir
 cd /var/www/html
