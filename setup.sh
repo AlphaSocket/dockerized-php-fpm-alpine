@@ -12,7 +12,6 @@ set -e
 apk apk update
 
 # Installing
-
 # Dependencies for PHP extensions
 apk add freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev libedit-dev libxml2-dev curl-dev
 # Dependencies for compile gd
@@ -33,6 +32,11 @@ docker-php-ext-install \
 pecl install redis
 pecl install xdebug
 docker-php-ext-enable redis xdebug
+
+# Cleaning cache
+apk cache clean
+# Removing unused binaries
+apk remove m4 perl autoconf libmagic file libgcc libstdc++ binutils-libs binutils gmp libgomp libatomic mpfr3 gcc musl-dev libc-dev g++ make re2c libmcrypt-dev
 
 # Set Workdir
 cd /var/www/html
