@@ -26,7 +26,7 @@ docker-php-ext-configure gd \
 
 # Installing PHP extensions
 docker-php-ext-install \
-    gd iconv opcache readline soap xml mysqli curl json mcrypt curl mbstring zip
+    gd iconv opcache readline soap xml mysqli curl json openssl curl mbstring zip
 
 # Installing redis and Xdebug
 pecl install redis
