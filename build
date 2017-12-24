@@ -6,13 +6,17 @@
 #
 source envvars
 
-TEMPLATE="./Dockerfile.template"
-DESTINATION="./Dockerfile"
+PHP_PORTS=$BUILD_PHP_FPM_PORT
+
+if [ $PHP_INSTALL_EXTENTSION_XDEBUG = $TRUE_KEY ];
+then
+    # Expose xdebug port if enabled
+    PHP_PORTS="$PHP_PORTS $BUILD_PHP_XDEBUG_PORT"
+fi
 
  # Building dockerfile
 sed \
-    -e "s;{PHP_VERSION};$PHP_VERSION;g" \
-    -e "s;{PHP_ENABLED_EXTENSIONS};$PHP_ENABLED_EXTENSIONS;g" \
+    -e "s;{PHP_VERSION};$BUILD_PHP_VERSION;g" \
     -e "s;{PHP_PORTS};$PHP_PORTS;g" \
-    $TEMPLATE > $DESTINATION
+    $BUILD_TEMPLATE > $BUILD_DESTINATION
 	
