@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# MAGENTO PHP CONFIG
+#
+# PHP-FPM on ALPINE
+#
+
+
+# exit if a command fails
+set -e
+
+docker-php-ext-enable $PHP_ENABLED_EXTENSIONS
