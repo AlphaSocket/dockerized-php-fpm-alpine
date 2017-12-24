@@ -13,6 +13,6 @@ RUN chmod +rx /usr/local/bin/setup && \
     /usr/local/bin/setup
 
 # php & xdebug port
-EXPOSE 9000 9001
+EXPOSE 9000
 
-ENTRYPOINT ["config && docker-php-entrypoint"]
+ENTRYPOINT ["/usr/local/bin/config && docker-php-entrypoint"]
