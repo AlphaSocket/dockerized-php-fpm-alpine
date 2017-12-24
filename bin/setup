@@ -23,7 +23,7 @@ then
     apk --no-cache add freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev musl musl-dev
     
     # Compiling gd
-    #docker-php-ext-configure gd \
+    docker-php-ext-configure gd \
         --with-gd \
         --with-freetype-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \
