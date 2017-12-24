@@ -1,7 +1,7 @@
 #
 # Do not change content here, image atomatically built
 #
-FROM php:7.2-fpm-alpine
+FROM php:{PHP_VERSION}-fpm-alpine
 
 ADD envvars /usr/local/envvars
 ADD bin/setup /usr/local/bin/setup
@@ -13,6 +13,6 @@ RUN chmod +rx /usr/local/bin/setup && \
     /usr/local/bin/setup
 
 # php & xdebug port
-EXPOSE 9000
+EXPOSE {PHP_PORTS}
 
 ENTRYPOINT ["/usr/local/bin/config && docker-php-entrypoint"]

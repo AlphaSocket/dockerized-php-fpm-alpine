@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# MAGENTO PHP CONFIG
+#
+# PHP-FPM on ALPINE
+#
+
+# exit if a command fails
+set -e
+set -x
+
+source /usr/local/envvars
+
+if [ $PHP_ENABLE_EXTENTSION_GD          = $TRUE_KEY ]; then docker-php-ext-enable gd; fi
+if [ $PHP_ENABLE_EXTENTSION_ICONV       = $TRUE_KEY ]; then docker-php-ext-enable iconv; fi
+if [ $PHP_ENABLE_EXTENTSION_OPCACHE     = $TRUE_KEY ]; then docker-php-ext-enable opcache; fi
+if [ $PHP_ENABLE_EXTENTSION_READLINE    = $TRUE_KEY ]; then docker-php-ext-enable readline; fi
+if [ $PHP_ENABLE_EXTENTSION_SOAP        = $TRUE_KEY ]; then docker-php-ext-enable soap; fi
+if [ $PHP_ENABLE_EXTENTSION_MYSQLI      = $TRUE_KEY ]; then docker-php-ext-enable mysqli; fi
+if [ $PHP_ENABLE_EXTENTSION_CURL        = $TRUE_KEY ]; then docker-php-ext-enable curl; fi
+if [ $PHP_ENABLE_EXTENTSION_JSON        = $TRUE_KEY ]; then docker-php-ext-enable json; fi
+if [ $PHP_ENABLE_EXTENTSION_MCRYPT      = $TRUE_KEY ]; then docker-php-ext-enable mcrypt; fi
+if [ $PHP_ENABLE_EXTENTSION_MBSTRING    = $TRUE_KEY ]; then docker-php-ext-enable mbstring; fi
+if [ $PHP_ENABLE_EXTENTSION_SODIUM      = $TRUE_KEY ]; then docker-php-ext-enable sodium; fi
+if [ $PHP_ENABLE_EXTENTSION_ZIP         = $TRUE_KEY ]; then docker-php-ext-enable zip; fi
+if [ $PHP_ENABLE_EXTENTSION_REDIS       = $TRUE_KEY ]; then docker-php-ext-enable redis; fi
+if [ $PHP_ENABLE_EXTENTSION_XDEBUG      = $TRUE_KEY ]; then docker-php-ext-enable xdebug; fi
+
+exit 0
