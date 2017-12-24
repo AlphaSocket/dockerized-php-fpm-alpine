@@ -1,0 +1,9 @@
+#!/bin/env
+#
+# MAGENTO PHP IMAGE BUILD ENV VARIABLES
+#
+# PHP-FPM on ALPINE
+#
+PHP_VERSION='7.0'
+PHP_ENABLED_EXTENSIONS="gd iconv opcache readline soap xml mysqli curl json mcrypt curl mbstring zip redis xdebug"
+PHP_PORTS='9000 9999'
