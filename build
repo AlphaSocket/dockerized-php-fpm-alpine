@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# MAGENTO PHP IMAGE BUILD
+#
+# PHP-FPM on ALPINE
+#
+source envvars
+
+TEMPLATE="./Dockerfile.template"
+DESTINATION="./Dockerfile"
+
+ # Building dockerfile
+sed \
+    -e "s;{PHP_VERSION};$PHP_VERSION;g" \
+    -e "s;{PHP_ENABLED_EXTENSIONS};$PHP_ENABLED_EXTENSIONS;g" \
+    -e "s;{PHP_PORTS};$PHP_PORTS;g" \
+    $TEMPLATE > $DESTINATION
+	
