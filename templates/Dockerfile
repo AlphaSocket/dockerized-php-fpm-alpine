@@ -3,6 +3,7 @@
 #
 FROM php:{PHP_VERSION}-fpm-alpine
 
+ADD envvars /usr/local/envvars
 ADD bin/setup /usr/local/bin/setup
 ADD bin/config /usr/local/bin/config
 
@@ -10,8 +11,6 @@ RUN chmod +rx /usr/local/bin/setup && \
     chmod +rx /usr/local/bin/config && \
     sync && \
     /usr/local/bin/setup
-
-ENV PHP_ENABLED_EXTENSIONS='{PHP_ENABLED_EXTENSIONS}' 
 
 # php & xdebug port
 EXPOSE {PHP_PORTS}
