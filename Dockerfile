@@ -1,5 +1,5 @@
 #
-# Do not change content here, image atomatically built
+# Do not change content here, image automatically built
 #
 FROM php:7.1-fpm-alpine
 
@@ -12,7 +12,6 @@ RUN chmod +rx /usr/local/bin/setup && \
     sync && \
     /usr/local/bin/setup
 
-# php & xdebug port
-EXPOSE 9000 9001
+EXPOSE 9000
 
-ENTRYPOINT ["/usr/local/bin/config && docker-php-entrypoint"]
+ENTRYPOINT ["/usr/local/bin/config &&  docker-php-entrypoint"]
