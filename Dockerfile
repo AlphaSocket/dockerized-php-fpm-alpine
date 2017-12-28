@@ -1,8 +1,9 @@
 #
-# Do not change content here, image atomatically built
+# Do not change content here, image automatically built
 #
-FROM php:7.0-fpm-alpine
+FROM php:master-fpm-alpine
 
+ADD envvars /usr/local/envvars
 ADD bin/setup /usr/local/bin/setup
 ADD bin/config /usr/local/bin/config
 
@@ -11,9 +12,6 @@ RUN chmod +rx /usr/local/bin/setup && \
     sync && \
     /usr/local/bin/setup
 
-ENV PHP_ENABLED_EXTENSIONS='gd iconv opcache readline soap xml mysqli curl json mcrypt curl mbstring zip redis xdebug' 
+EXPOSE 9000 9001 
 
-# php & xdebug port
-EXPOSE 9000 9999
-
-ENTRYPOINT ["config && docker-php-entrypoint"]
+ENTRYPOINT ["/usr/local/bin/config &&  docker-php-entrypoint"]

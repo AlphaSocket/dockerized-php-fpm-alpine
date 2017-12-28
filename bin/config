@@ -1,12 +1,80 @@
 #!/bin/sh
-#
-# MAGENTO PHP CONFIG
-#
-# PHP-FPM on ALPINE
-#
-
 
 # exit if a command fails
 set -e
 
-docker-php-ext-enable $PHP_ENABLED_EXTENSIONS
+source /usr/local/envvars
+
+# Enable extension gd
+if [ $CONFIG_PHP_EXT_GD = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable gd
+fi
+
+# Enable extension iconv
+if [ $CONFIG_PHP_EXT_ICONV = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable iconv
+fi
+
+# Enable extension opcache
+if [ $CONFIG_PHP_EXT_OPCACHE = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable opcache
+fi
+
+# Enable extension readline
+if [ $CONFIG_PHP_EXT_READLINE = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable readline
+fi
+
+# Enable extension soap
+if [ $CONFIG_PHP_EXT_SOAP = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable soap
+fi
+
+# Enable extension mysqli
+if [ $CONFIG_PHP_EXT_MYSQLI = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable mysqli
+fi
+
+# Enable extension curl
+if [ $CONFIG_PHP_EXT_CURL = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable curl
+fi
+
+# Enable extension json
+if [ $CONFIG_PHP_EXT_JSON = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable json
+fi
+
+# Enable extension mcrypt
+if [ $CONFIG_PHP_EXT_MCRYPT = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable mcrypt
+fi
+
+# Enable extension mbstring
+if [ $CONFIG_PHP_EXT_MBSTRING = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable mbstring
+fi
+
+# Enable extension sodium
+if [ $CONFIG_PHP_EXT_SODIUM = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable sodium
+fi
+
+# Enable extension zip
+if [ $CONFIG_PHP_EXT_ZIP = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable zip
+fi
+
+# Enable extension redis
+if [ $CONFIG_PHP_EXT_REDIS = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable redis
+fi
+
+# Enable extension xdebug
+if [ $CONFIG_PHP_EXT_XDEBUG = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable xdebug
+fi
+
+
+
+exit 0
