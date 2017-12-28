@@ -1,7 +1,17 @@
-FROM php:latest-fpm-alpine
+#
+# Do not change content here, image automatically built
+#
+FROM php:master-fpm-alpine
 
-ADD setup.sh setup.sh
-RUN chmod +rx setup.sh && sync && ./setup.sh
+ADD envvars /usr/local/envvars
+ADD bin/setup /usr/local/bin/setup
+ADD bin/config /usr/local/bin/config
 
-# php & xdebug port
-EXPOSE 9000 9999
+RUN chmod +rx /usr/local/bin/setup && \
+    chmod +rx /usr/local/bin/config && \
+    sync && \
+    /usr/local/bin/setup
+
+EXPOSE 9000 9001 
+
+ENTRYPOINT ["/usr/local/bin/config &&  docker-php-entrypoint"]
