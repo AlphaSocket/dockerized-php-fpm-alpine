@@ -1,0 +1,273 @@
+project: Magento PHP-FPM Alpine Image build
+version: 0.1.0
+
+#
+# Init builder
+#
+general:
+  envvars:
+    keys:
+      True: "True"
+      false: "False"
+      dev: "dev"
+      prd: "prd"
+    
+#
+# Build dockerfile
+#
+build:
+  envvars:
+    env:
+      valueFromFile: "./.branch-env"
+    # PHP
+    php:
+      version: 
+        valueFromFile: ".branch-php-version"
+      fpm:
+        port: '9000'
+      xdebug:
+        port: '9001'
+    # Docker
+    dockerfile:
+      image:
+        valueFromCommand: 'echo "php:${BUILD_PHP_VERSION}-fpm-alpine"'
+      ports:
+        valueFromCommand: 'if [ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ]; then echo "$BUILD_PHP_FPM_PORT"; else echo "$BUILD_PHP_FPM_PORT $BUILD_PHP_XDEBUG_PORT "; fi'
+      entrypoint: "
+      docker-php-entrypoint"
+
+#
+# Setup process injected in dockerfile
+#
+setup:
+  # Setup env 
+  envvars:
+    dependencies: "m4 perl autoconf libmagic file libgcc libstdc++ binutils-libs binutils gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c"
+    php: &php_ext
+      ext: 
+        curl: True
+        gd: True
+        iconv: True
+        mysqli: True
+        mbstring: True
+        mcrypt:
+          valueFromCommand: 'if [ "$BUILD_PHP_VERSION" = "7.2" ]; then echo $GENERAL_KEYS_TRUE; else echo $GENERAL_KEYS_FALSE; fi'
+        opcache: True
+        readline: True
+        redis: True
+        soap: True
+        sodium:
+          valueFromCommand: 'if [ "$BUILD_PHP_VERSION" = "7.2" ]; then echo $GENERAL_KEYS_FALSE; else echo $GENERAL_KEYS_TRUE; fi'
+        xml: True
+        xdebug:
+          valueFromCommand: 'if [ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ]; then echo "$GENERAL_KEYS_TRUE"; else echo "$GENERAL_KEYS_FALSE"; fi'
+        zip: True
+
+  # Setup Processes
+  processes:
+    - title: "Install dependencies for compile"
+      commands: 
+        - "apk --no-cache add $SETUP_DEPENDENCIES"
+
+    - title: "Install PHP extension gd"
+      shell_condition: "$SETUP_PHP_EXT_GD = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev musl musl-dev
+        # Config
+        - "docker-php-ext-configure gd \
+          --with-gd \
+          --with-freetype-dir=/usr/include/ \
+          --with-png-dir=/usr/include/ \
+          --with-jpeg-dir=/usr/include/"
+        # Install
+        - docker-php-ext-install gd
+
+    - title: "Install PHP extension iconv"
+      shell_condition: "$SETUP_PHP_EXT_ICONV = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add musl musl-dev
+        # Install
+        - docker-php-ext-install iconv
+
+    - title: "Install PHP extension opcache"
+      shell_condition: "$SETUP_PHP_EXT_OPCACHE = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add musl musl-dev
+        # Install
+        - docker-php-ext-install opcache
+
+    - title: "Install PHP extension readline"
+      shell_condition: "$SETUP_PHP_EXT_READLINE = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add musl-dev libedit-dev
+        # Install
+        - docker-php-ext-install readline
+
+    - title: "Install PHP extension soap"
+      shell_condition: "$SETUP_PHP_EXT_SOAP = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add libxml2-dev
+        # Install
+        - docker-php-ext-install soap
+
+    - title: "Install PHP extension xml"
+      shell_condition: "$SETUP_PHP_EXT_XML = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add libxml2-dev
+        # Install
+        - docker-php-ext-install xml
+
+    - title: "Install PHP extension mysqli"
+      shell_condition: "$SETUP_PHP_EXT_MYSQLI = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add libxml2-dev
+        # Install
+        - docker-php-ext-install mysqli
+
+    - title: "Install PHP extension curl"
+      shell_condition: "$SETUP_PHP_EXT_CURL = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add curl-dev
+        # Install
+        - docker-php-ext-install curl
+
+    - title: "Install PHP extension json"
+      shell_condition: "$SETUP_PHP_EXT_JSON = $GENERAL_KEYS_TRUE"
+      commands: 
+            # Install
+        - docker-php-ext-install json
+
+    - title: "Install PHP extension mcrypt"
+      shell_condition: "$SETUP_PHP_EXT_MCRYPT = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add libmcrypt-dev libltdl
+        # Install
+        - docker-php-ext-install mcrypt
+
+    - title: "Install PHP extension mbstring"
+      shell_condition: "$SETUP_PHP_EXT_MBSTRING = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Install
+        - docker-php-ext-install mbstring
+
+    - title: "Install PHP extension sodium"
+      shell_condition: "$SETUP_PHP_EXT_SODIUM = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add libsodium-dev
+        # Install
+        - docker-php-ext-install sodium
+
+    - title: "Install PHP extension zip"
+      shell_condition: "$SETUP_PHP_EXT_ZIP = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add zlib
+        # Install
+        - docker-php-ext-install zip
+
+    - title: "Install PHP extension redis"
+      shell_condition: "$SETUP_PHP_EXT_REDIS = $GENERAL_KEYS_TRUE"
+      commands: 
+        - pecl install redis
+
+    - title: "Install PHP extension xdebug"
+      shell_condition: "$SETUP_PHP_EXT_XDEBUG = $GENERAL_KEYS_TRUE"
+      commands: 
+        - pecl install xdebug
+
+    - title: "Clean container"
+      commands: 
+        - "apk del $SETUP_DEPENDENCIES"
+
+config:
+  envvars:
+    php:
+      <<: *php_ext
+  processes:
+    - title: "Enable extension gd"
+      shell_condition: "$CONFIG_PHP_EXT_GD = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable gd
+
+    - title: "Enable extension iconv"
+      shell_condition: "$CONFIG_PHP_EXT_ICONV = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable iconv
+
+    - title: "Enable extension opcache"
+      shell_condition: "$CONFIG_PHP_EXT_OPCACHE = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable opcache
+
+    - title: "Enable extension readline"
+      shell_condition: "$CONFIG_PHP_EXT_READLINE = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable readline
+
+    - title: "Enable extension soap"
+      shell_condition: "$CONFIG_PHP_EXT_SOAP = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable soap
+
+    - title: "Enable extension mysqli"
+      shell_condition: "$CONFIG_PHP_EXT_MYSQLI = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable mysqli
+
+    - title: "Enable extension curl"
+      shell_condition: "$CONFIG_PHP_EXT_CURL = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable curl
+
+    - title: "Enable extension json"
+      shell_condition: "$CONFIG_PHP_EXT_JSON = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable json
+
+    - title: "Enable extension mcrypt"
+      shell_condition: "$CONFIG_PHP_EXT_MCRYPT = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable mcrypt
+
+    - title: "Enable extension mbstring"
+      shell_condition: "$CONFIG_PHP_EXT_MBSTRING = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable mbstring
+
+    - title: "Enable extension sodium"
+      shell_condition: "$CONFIG_PHP_EXT_SODIUM = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable sodium
+
+    - title: "Enable extension zip"
+      shell_condition: "$CONFIG_PHP_EXT_ZIP = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable zip
+
+    - title: "Enable extension redis"
+      shell_condition: "$CONFIG_PHP_EXT_REDIS = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable redis
+
+    - title: "Enable extension xdebug"
+      shell_condition: "$CONFIG_PHP_EXT_XDEBUG = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable xdebug
+
+# test:
+#   envvars:
+#   processes:
+#     - title: "Starting container"
+#       shell_condition: "$CONFIG_PHP_EXT_GD = $GENERAL_KEYS_TRUE"
+#       commands:
+#         - docker-php-ext-enable gd
