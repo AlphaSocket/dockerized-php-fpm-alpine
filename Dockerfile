@@ -12,6 +12,6 @@ RUN chmod +rx /usr/local/bin/setup && \
     sync && \
     /usr/local/bin/setup
 
-EXPOSE 9000 9001 
+EXPOSE 9000 BUILD_PHP_XDEBUG_PORT
 
-ENTRYPOINT ["/usr/local/bin/config &&  docker-php-entrypoint"]
+ENTRYPOINT ["/usr/local/bin/config && docker-php-entrypoint"]
