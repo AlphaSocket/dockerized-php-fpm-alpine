@@ -13,7 +13,8 @@ general:
       prd: "prd"
     
 #
-# Build dockerfile
+# Build process
+# Creates dockerfile and file used in it
 #
 build:
   envvars:
@@ -32,9 +33,8 @@ build:
       image:
         valueFromCommand: 'echo "php:${BUILD_PHP_VERSION}-fpm-alpine"'
       ports:
-        valueFromCommand: 'if [ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ]; then echo "$BUILD_PHP_FPM_PORT"; else echo "$BUILD_PHP_FPM_PORT $BUILD_PHP_XDEBUG_PORT "; fi'
-      entrypoint: "
-      docker-php-entrypoint"
+        valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "$BUILD_PHP_FPM_PORT BUILD_PHP_XDEBUG_PORT" || echo "$BUILD_PHP_FPM_PORT"'
+      entrypoint: "docker-php-entrypoint"
 
 #
 # Setup process injected in dockerfile
@@ -51,18 +51,17 @@ setup:
         mysqli: True
         mbstring: True
         mcrypt:
-          valueFromCommand: 'if [ "$BUILD_PHP_VERSION" = "7.2" ]; then echo $GENERAL_KEYS_TRUE; else echo $GENERAL_KEYS_FALSE; fi'
+          valueFromCommand: '[ "$BUILD_PHP_VERSION" = "7.2" ] && echo $GENERAL_KEYS_FALSE || echo $GENERAL_KEYS_TRUE'
         opcache: True
         readline: True
         redis: True
         soap: True
         sodium:
-          valueFromCommand: 'if [ "$BUILD_PHP_VERSION" = "7.2" ]; then echo $GENERAL_KEYS_FALSE; else echo $GENERAL_KEYS_TRUE; fi'
+          valueFromCommand: '[ "$BUILD_PHP_VERSION" = "7.2" ] && echo $GENERAL_KEYS_TRUE || echo $GENERAL_KEYS_FALSE'
         xml: True
         xdebug:
-          valueFromCommand: 'if [ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ]; then echo "$GENERAL_KEYS_TRUE"; else echo "$GENERAL_KEYS_FALSE"; fi'
+          valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "$GENERAL_KEYS_TRUE" || echo "$GENERAL_KEYS_FALSE"'
         zip: True
-
   # Setup Processes
   processes:
     - title: "Install dependencies for compile"
@@ -189,7 +188,11 @@ setup:
       commands: 
         - "apk del $SETUP_DEPENDENCIES"
 
+#
+# Config process run just before the entrypoint
+#
 config:
+  # Config env 
   envvars:
     php:
       <<: *php_ext
