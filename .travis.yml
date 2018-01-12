@@ -9,6 +9,59 @@ before_install:
   - docker build -t 03192859189254/docker-magento-php-fpm-alpine:latest .
 
 script:
+# Install test requirement
+ - s
+ - u
+ - d
+ - o
+ -  
+ - a
+ - p
+ - t
+ -  
+ - u
+ - p
+ - d
+ - a
+ - t
+ - e
+ -  
+ - &
+ - &
+ -  
+ - s
+ - u
+ - d
+ - o
+ -  
+ - a
+ - p
+ - t
+ -  
+ - i
+ - n
+ - s
+ - t
+ - a
+ - l
+ - l
+ -  
+ - l
+ - i
+ - b
+ - f
+ - c
+ - g
+ - i
+ - 0
+ - l
+ - d
+ - b
+ - l
+ -  
+ - -
+ - y
+
 # Starting container
  - TEST_CONTAINER_ID=$(docker run -d -p 127.0.0.1:30000:9000 03192859189254/docker-magento-php-fpm-alpine:latest)
 
