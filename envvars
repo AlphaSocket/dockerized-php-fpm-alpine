@@ -13,11 +13,13 @@ BUILD_PHP_XDEBUG_PORT='9001'
 BUILD_DOCKERFILE_IMAGE='php:7.2-fpm-alpine'
 BUILD_DOCKERFILE_PORTS_MAIN='9000'
 BUILD_DOCKERFILE_PORTS_ADDITIONAL=''
-BUILD_DOCKERFILE_CMD='docker-php-entrypoint'
+BUILD_DOCKERFILE_ENTRYPOINT='/bin/sh", "-c'
+BUILD_DOCKERFILE_CMD='/usr/local/bin/docker-php-entrypoint php-fpm'
 
 
 # Setup
-SETUP_DEPENDENCIES='m4 perl autoconf libmagic file libgcc libstdc++ binutils-libs binutils gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c'
+SETUP_DEPENDENCIES_COMMON='binutils-libs binutils'
+SETUP_DEPENDENCIES_BUILD='m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c'
 SETUP_PHP_EXT_CURL='True'
 SETUP_PHP_EXT_GD='True'
 SETUP_PHP_EXT_ICONV='True'
