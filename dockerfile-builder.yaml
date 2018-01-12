@@ -33,8 +33,11 @@ build:
       image:
         valueFromCommand: 'echo "php:${BUILD_PHP_VERSION}-fpm-alpine"'
       ports:
-        valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "$BUILD_PHP_FPM_PORT BUILD_PHP_XDEBUG_PORT" || echo "$BUILD_PHP_FPM_PORT"'
-      entrypoint: "docker-php-entrypoint"
+        main: 
+          valueFromCommand: 'echo "$BUILD_PHP_FPM_PORT"'
+        additional: 
+          valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "BUILD_PHP_XDEBUG_PORT" || echo ""'
+      cmd: "docker-php-entrypoint"
 
 #
 # Setup process injected in dockerfile
@@ -267,10 +270,15 @@ config:
       commands:
         - docker-php-ext-enable xdebug
 
-# test:
-#   envvars:
-#   processes:
-#     - title: "Starting container"
-#       shell_condition: "$CONFIG_PHP_EXT_GD = $GENERAL_KEYS_TRUE"
-#       commands:
-#         - docker-php-ext-enable gd
+test:
+  envvars:
+    port: 30000
+    dockerfile:
+      tag: 
+        user: 03192859189254
+        name: docker-magento-php-fpm-alpine
+  processes:
+    - title: "Starting container"
+      shell_condition: "$CONFIG_PHP_EXT_GD = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable gd
