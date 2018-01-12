@@ -284,7 +284,8 @@ test:
           valueFromCommand: "git rev-parse --abbrev-ref HEAD"
   processes:
     - title: "Install test requirement"
-      commands: sudo apt update && sudo apt install libfcgi0ldbl -y
+      commands: 
+        - sudo apt update && sudo apt install libfcgi0ldbl -y
 
     - title: "Starting container"
       commands:
