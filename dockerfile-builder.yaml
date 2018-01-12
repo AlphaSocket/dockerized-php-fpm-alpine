@@ -277,6 +277,8 @@ test:
       tag: 
         user: 03192859189254
         name: docker-magento-php-fpm-alpine
+        version: 
+          valueFromCommand: "git rev-parse --abbrev-ref HEAD"
   processes:
     - title: "Starting container"
       shell_condition: "$CONFIG_PHP_EXT_GD = $GENERAL_KEYS_TRUE"
