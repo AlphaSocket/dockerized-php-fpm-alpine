@@ -283,10 +283,6 @@ test:
         version: 
           valueFromCommand: "git rev-parse --abbrev-ref HEAD"
   processes:
-    - title: "Install test requirement"
-      commands: 
-        - sudo apt update && sudo apt install libfcgi0ldbl -y
-
     - title: "Starting container"
       commands:
         - TEST_CONTAINER_ID=$(docker run -d -p 127.0.0.1:${TEST_PORT}:${BUILD_DOCKERFILE_PORTS_MAIN} ${TEST_DOCKERFILE_TAG_USER}/${TEST_DOCKERFILE_TAG_NAME}:${TEST_DOCKERFILE_TAG_VERSION})
