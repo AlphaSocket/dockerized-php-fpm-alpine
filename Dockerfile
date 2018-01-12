@@ -12,6 +12,6 @@ RUN chmod +rx /usr/local/bin/setup && \
     sync && \
     /usr/local/bin/setup
 
-EXPOSE 9000
+EXPOSE 9000 
 
-ENTRYPOINT ["/usr/local/bin/config && docker-php-entrypoint"]
+CMD ["/usr/local/bin/config && docker-php-entrypoint"]
