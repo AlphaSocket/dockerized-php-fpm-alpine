@@ -17,9 +17,9 @@ script:
 
 # Testing
  - SCRIPT_NAME=/test.php
-SCRIPT_FILENAME=/test.php
-REQUEST_METHOD=GET
-cgi-fcgi -bind -connect 127.0.0.1:30000
+ - SCRIPT_FILENAME=/test.php
+ - REQUEST_METHOD=GET
+ - cgi-fcgi -bind -connect 127.0.0.1:30000
 
 # Cleaning
  - docker exec $TEST_CONTAINER_ID /bin/sh -c "rm /var/www/html/test.php"
