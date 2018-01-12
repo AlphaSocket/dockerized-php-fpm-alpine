@@ -14,4 +14,5 @@ RUN chmod +rx /usr/local/bin/setup && \
 
 EXPOSE 9000 BUILD_PHP_XDEBUG_PORT
 
-CMD ["/usr/local/bin/config && docker-php-entrypoint"]
+ENTRYPOINT ["/bin/sh", "-c"]
+CMD ["/usr/local/bin/config && /usr/local/bin/docker-php-entrypoint php-fpm"]
