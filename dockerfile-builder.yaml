@@ -36,7 +36,7 @@ build:
         main: 
           valueFromCommand: 'echo "$BUILD_PHP_FPM_PORT"'
         additional: 
-          valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "BUILD_PHP_XDEBUG_PORT" || echo ""'
+          valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "${BUILD_PHP_XDEBUG_PORT}" || echo ""'
       entrypoint: /bin/sh", "-c
       cmd: /usr/local/bin/docker-php-entrypoint php-fpm
 
