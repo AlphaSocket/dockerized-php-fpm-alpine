@@ -6,12 +6,10 @@ services:
   - docker
 
 before_install:
+  - sudo apt update && sudo apt install curl libfcgi0ldbl -y
   - docker build -t 03192859189254/docker-magento-php-fpm-alpine:latest .
 
 script:
-# Install test requirement
- - sudo apt update && sudo apt install libfcgi0ldbl -y
-
 # Starting container
  - TEST_CONTAINER_ID=$(docker run -d -p 127.0.0.1:30000:9000 03192859189254/docker-magento-php-fpm-alpine:latest)
 
@@ -32,5 +30,5 @@ script:
 after_success:
   - if [ "$DOCKER_USERNAME" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker push 03192859189254/docker-magento-php-fpm-alpine;
+    docker push 03192859189254/docker-magento-php-fpm-alpine:latest;
     fi
