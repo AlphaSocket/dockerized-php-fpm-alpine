@@ -275,7 +275,7 @@ config:
 
 test:
   envvars:
-    port: 80
+    port: 30000
     dockerfile:
       tag: 
         user: 03192859189254
@@ -296,7 +296,7 @@ test:
         - SCRIPT_NAME=/test.php
         - SCRIPT_FILENAME=/test.php
         - REQUEST_METHOD=GET
-        - sleep 2 && cgi-fcgi -bind -connect 127.0.0.1:${TEST_PORT}
+        - sleep 35 && cgi-fcgi -bind -connect 127.0.0.1:${TEST_PORT}
 
     - title: "Cleaning"
       commands:
