@@ -1,15 +1,17 @@
 sudo: required
 
+language: python
+
 services:
   - docker
 
 before_install:
   - sudo apt update && sudo apt install curl libfcgi0ldbl -y
-  - docker pull 03192859189254/docker-magento-php-fpm-alpine:5.6-dev
+  - docker build -t 03192859189254/docker-magento-php-fpm-alpine:5.6-dev .
 
 script:
 # Starting container
- - TEST_CONTAINER_ID=$(docker run -d -p 127.0.0.1:30000:9000 03192859189254/docker-magento-php-fpm-alpine:5.6-dev)
+ - TEST_CONTAINER_ID=$(docker run -d -p 127.0.0.1:80:9000 03192859189254/docker-magento-php-fpm-alpine:5.6-dev)
 
 # Injecting test file
  - docker exec $TEST_CONTAINER_ID /bin/sh -c "echo '<?php phpinfo(); ?>' > /var/www/html/test.php"
@@ -18,7 +20,7 @@ script:
  - SCRIPT_NAME=/test.php
  - SCRIPT_FILENAME=/test.php
  - REQUEST_METHOD=GET
- - sleep 2 && cgi-fcgi -bind -connect 127.0.0.1:30000
+ - sleep 2 && cgi-fcgi -bind -connect 127.0.0.1:80
 
 # Cleaning
  - docker exec $TEST_CONTAINER_ID /bin/sh -c "rm /var/www/html/test.php"
