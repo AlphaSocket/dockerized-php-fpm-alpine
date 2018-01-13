@@ -25,7 +25,7 @@ build:
     # PHP
     php:
       version: 
-        valueFromCommand: '[ "$BUILD_VERSION" == "latest" ] && echo 7.2 || echo $BUILD_VERSION'
+        valueFromCommand: '[ "$BUILD_VERSION" = "latest" ] && echo 7.2 || echo $BUILD_VERSION'
       fpm:
         port: '9000'
       xdebug:
