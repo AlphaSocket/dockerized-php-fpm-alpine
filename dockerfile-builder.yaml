@@ -275,7 +275,7 @@ config:
 
 test:
   envvars:
-    port: 30000
+    port: 80
     dockerfile:
       tag: 
         user: 03192859189254
