@@ -46,7 +46,7 @@ if [ $CONFIG_PHP_EXT_JSON = True ]; then
 fi
 
 # Enable extension mcrypt
-if [ False = True ]; then
+if [ True = True ]; then
     docker-php-ext-enable mcrypt
 fi
 
@@ -56,7 +56,7 @@ if [ True = True ]; then
 fi
 
 # Enable extension sodium
-if [ True = True ]; then
+if [ False = True ]; then
     docker-php-ext-enable sodium
 fi
 
@@ -71,7 +71,7 @@ if [ True = True ]; then
 fi
 
 # Enable extension xdebug
-if [ True = True ]; then
+if [ False = True ]; then
     docker-php-ext-enable xdebug
 fi
 

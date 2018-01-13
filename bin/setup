@@ -64,7 +64,7 @@ if [ $SETUP_PHP_EXT_JSON = True ]; then
 fi
 
 # Install PHP extension mcrypt
-if [ False = True ]; then
+if [ True = True ]; then
     apk --no-cache add libmcrypt-dev libltdl
     docker-php-ext-install mcrypt
 fi
@@ -75,7 +75,7 @@ if [ True = True ]; then
 fi
 
 # Install PHP extension sodium
-if [ True = True ]; then
+if [ False = True ]; then
     apk --no-cache add libsodium-dev
     docker-php-ext-install sodium
 fi
@@ -92,7 +92,7 @@ if [ True = True ]; then
 fi
 
 # Install PHP extension xdebug
-if [ True = True ]; then
+if [ False = True ]; then
     pecl install xdebug
 fi
 
