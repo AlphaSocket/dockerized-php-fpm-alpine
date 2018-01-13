@@ -71,7 +71,7 @@ if [ True = True ]; then
 fi
 
 # Enable extension xdebug
-if [ True = True ]; then
+if [ False = True ]; then
     docker-php-ext-enable xdebug
 fi
 
