@@ -92,7 +92,7 @@ if [ True = True ]; then
 fi
 
 # Install PHP extension xdebug
-if [ False = True ]; then
+if [ True = True ]; then
     pecl install xdebug
 fi
 
