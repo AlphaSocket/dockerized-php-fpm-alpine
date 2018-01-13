@@ -12,7 +12,7 @@ RUN chmod +rx /usr/local/bin/setup && \
     sync && \
     /usr/local/bin/setup
 
-EXPOSE 9000 
+EXPOSE 9000 OrderedDict([('valueFromCommand', '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "${BUILD_PHP_XDEBUG_PORT}" || echo ""')])
 
 ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["/usr/local/bin/config && /usr/local/bin/docker-php-entrypoint php-fpm"]
