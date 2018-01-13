@@ -18,12 +18,14 @@ general:
 #
 build:
   envvars:
+    version:
+      valueFromCommand: "git rev-parse --abbrev-ref HEAD | cut -d \\- -f 1"
     env:
-      valueFromFile: "./.branch-env"
+      valueFromCommand: "env=$(git rev-parse --abbrev-ref HEAD | cut -d \\- -f 2); [ "$env" == "$BUILD_VERSION" ] && echo $GENERAL_KEYS_PRD || echo $env"
     # PHP
     php:
       version: 
-        valueFromFile: ".branch-php-version"
+        valueFromCommand: '[ "$BUILD_VERSION" == "latest" ] && echo 7.2 || echo $BUILD_VERSION'
       fpm:
         port: '9000'
       xdebug:
