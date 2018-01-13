@@ -1,13 +1,11 @@
 sudo: required
 
-language: python
-
 services:
   - docker
 
 before_install:
   - sudo apt update && sudo apt install curl libfcgi0ldbl -y
-  - docker build -t 03192859189254/docker-magento-php-fpm-alpine:latest-dev .
+  - docker pull 03192859189254/docker-magento-php-fpm-alpine:latest-dev
 
 script:
 # Starting container
