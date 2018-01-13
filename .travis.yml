@@ -20,7 +20,9 @@ script:
  - SCRIPT_NAME=/test.php
  - SCRIPT_FILENAME=/test.php
  - REQUEST_METHOD=GET
- - sleep 35 && cgi-fcgi -bind -connect 127.0.0.1:30000
+ - MAX_TRIES=150
+ - SECONDS_BETWEEN_TRIES=1
+ - c=1; while [ $c -le ${MAX_TRIES} ] && ! cgi-fcgi -bind -connect 127.0.0.1:30000; do echo "Try $c failed"; sleep ${SECONDS_BETWEEN_TRIES}; ((c++)); done
 
 # Cleaning
  - docker exec $TEST_CONTAINER_ID /bin/sh -c "rm /var/www/html/test.php"
