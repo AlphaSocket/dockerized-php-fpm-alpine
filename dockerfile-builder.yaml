@@ -21,7 +21,11 @@ build:
     version:
       valueFromCommand: "git rev-parse --abbrev-ref HEAD | cut -d \\- -f 1"
     env:
+<<<<<<< HEAD
       valueFromCommand: "env=$(git rev-parse --abbrev-ref HEAD | cut -d \\- -f 2); [ "$env" == "$BUILD_VERSION" ] && echo $GENERAL_KEYS_PRD || echo $env'
+=======
+      valueFromCommand: 'env=$(git rev-parse --abbrev-ref HEAD | cut -d \\- -f 2); [ "$env" == "$BUILD_VERSION" ] && echo $GENERAL_KEYS_PRD || echo $env'
+>>>>>>> master
     # PHP
     php:
       version: 
