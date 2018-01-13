@@ -6,13 +6,18 @@ GENERAL_KEYS_PRD='prd'
 
 
 # Build
-BUILD_ENV='dev'
-BUILD_PHP_VERSION='7.0'
+BUILD_VERSION='7.0'
+BUILD_ENV='cut: the delimiter must be a single character
+Try 'cut --help' for more information.
+/bin/sh: 1: [: unexpected operator'
+BUILD_PHP_VERSION='/bin/sh: 1: [: 7.0: unexpected operator
+7.0'
 BUILD_PHP_FPM_PORT='9000'
 BUILD_PHP_XDEBUG_PORT='9001'
-BUILD_DOCKERFILE_IMAGE='php:7.0-fpm-alpine'
+BUILD_DOCKERFILE_IMAGE='php:/bin/sh: 1: [: 7.0: unexpected operator
+7.0-fpm-alpine'
 BUILD_DOCKERFILE_PORTS_MAIN='9000'
-BUILD_DOCKERFILE_PORTS_ADDITIONAL='9001'
+BUILD_DOCKERFILE_PORTS_ADDITIONAL=''
 BUILD_DOCKERFILE_ENTRYPOINT='/bin/sh", "-c'
 BUILD_DOCKERFILE_CMD='/usr/local/bin/docker-php-entrypoint php-fpm'
 
@@ -32,7 +37,7 @@ SETUP_PHP_EXT_REDIS='True'
 SETUP_PHP_EXT_SOAP='True'
 SETUP_PHP_EXT_SODIUM='False'
 SETUP_PHP_EXT_XML='True'
-SETUP_PHP_EXT_XDEBUG='True'
+SETUP_PHP_EXT_XDEBUG='False'
 SETUP_PHP_EXT_ZIP='True'
 
 
@@ -49,6 +54,6 @@ CONFIG_PHP_EXT_REDIS='True'
 CONFIG_PHP_EXT_SOAP='True'
 CONFIG_PHP_EXT_SODIUM='False'
 CONFIG_PHP_EXT_XML='True'
-CONFIG_PHP_EXT_XDEBUG='True'
+CONFIG_PHP_EXT_XDEBUG='False'
 CONFIG_PHP_EXT_ZIP='True'
 
