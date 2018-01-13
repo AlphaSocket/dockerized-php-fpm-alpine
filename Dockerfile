@@ -1,7 +1,8 @@
 #
 # Do not change content here, image automatically built
 #
-FROM php:7.0-fpm-alpine
+FROM php:/bin/sh: 1: [: 7.0: unexpected operator
+7.0-fpm-alpine
 
 ADD envvars /usr/local/envvars
 ADD bin/setup /usr/local/bin/setup
