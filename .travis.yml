@@ -7,11 +7,11 @@ services:
 
 before_install:
   - sudo apt update && sudo apt install curl libfcgi0ldbl -y
-  - docker build -t 03192859189254/docker-magento-php-fpm-alpine:5.6-dev .
+  - docker build -t 03192859189254/docker-magento-apache-alpine:5.6-dev .
 
 script:
 # Starting container
- - TEST_CONTAINER_ID=$(docker run -d -p 127.0.0.1:30000:9000 03192859189254/docker-magento-php-fpm-alpine:5.6-dev)
+ - TEST_CONTAINER_ID=$(docker run -d -p 127.0.0.1:30000:9000 03192859189254/docker-magento-apache-alpine:5.6-dev)
 
 # Injecting test file
  - docker exec $TEST_CONTAINER_ID /bin/sh -c "echo '<?php phpinfo(); ?>' > /var/www/html/test.php"
@@ -32,6 +32,6 @@ script:
 after_success:
   - if [ "$DOCKER_USERNAME" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTER;
-    docker tag 03192859189254/docker-magento-php-fpm-alpine:5.6-dev ${DOCKER_REGISTER}/${DOCKER_USERNAME}/docker-magento-php-fpm-alpine:5.6-dev;
-    docker push ${DOCKER_REGISTER}/${DOCKER_USERNAME}/docker-magento-php-fpm-alpine:5.6-dev;
+    docker tag 03192859189254/docker-magento-apache-alpine:5.6-dev ${DOCKER_REGISTER}/${DOCKER_USERNAME}/docker-magento-apache-alpine:5.6-dev;
+    docker push ${DOCKER_REGISTER}/${DOCKER_USERNAME}/docker-magento-apache-alpine:5.6-dev;
     fi
