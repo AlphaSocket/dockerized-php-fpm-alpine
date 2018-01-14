@@ -6,6 +6,8 @@ GENERAL_KEYS_PRD='prd'
 
 
 # Build
+BUILD_NAME='docker-magento-apache-alpine'
+BUILD_BRANCH='latest-dev'
 BUILD_VERSION='latest'
 BUILD_ENV='dev'
 BUILD_PHP_VERSION='7.2'
