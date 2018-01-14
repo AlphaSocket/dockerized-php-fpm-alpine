@@ -1,5 +1,7 @@
-project: Magento PHP-FPM Alpine Image build
-version: 0.1.0
+project: 
+  title: &project_title Magento PHP-FPM Alpine Image build
+  codename: &project_codename docker-magento-apache-alpine
+  version: 0.1.0
 
 #
 # Init builder
@@ -18,10 +20,13 @@ general:
 #
 build:
   envvars:
+    name: *project_codename
+    branch:
+      valueFromCommand: 'git rev-parse --abbrev-ref HEAD'
     version:
-      valueFromCommand: 'git rev-parse --abbrev-ref HEAD | cut -d \- -f 1'
+      valueFromCommand: 'echo $BUILD_BRANCH | cut -d \- -f 1'
     env:
-      valueFromCommand: 'env=$(git rev-parse --abbrev-ref HEAD | cut -d \- -f 2); [ "$env" = "$BUILD_VERSION" ] && echo $GENERAL_KEYS_PRD || echo $env'
+      valueFromCommand: 'env=$(echo $BUILD_BRANCH | cut -d \- -f 2); [ "$env" = "$BUILD_VERSION" ] && echo $GENERAL_KEYS_PRD || echo $env'
     # PHP
     php:
       version: 
@@ -281,9 +286,10 @@ test:
     dockerfile:
       tag: 
         user: 03192859189254
-        name: docker-magento-php-fpm-alpine
+        name: 
+          valueFromCommand: 'echo $BUILD_NAME'
         version: 
-          valueFromCommand: "git rev-parse --abbrev-ref HEAD"
+          valueFromCommand: 'echo $BUILD_BRANCH'
   processes:
     - title: "Starting container"
       commands:
