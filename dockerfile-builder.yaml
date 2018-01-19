@@ -1,6 +1,6 @@
 project: 
   title: &project_title Magento PHP-FPM Alpine Image build
-  codename: &project_codename docker-magento-apache-alpine
+  codename: &project_codename php-fpm-alpine
   version: 0.1.0
 
 #
@@ -8,6 +8,8 @@ project:
 #
 general:
   envvars:
+    docker:
+      user: &general_docker_user 03192859189254 
     keys:
       True: "True"
       false: "False"
@@ -23,6 +25,8 @@ build:
     name: *project_codename
     branch:
       valueFromCommand: 'git rev-parse --abbrev-ref HEAD'
+    commit:
+      valueFromCommand: 'git rev-parse --short HEAD'
     version:
       valueFromCommand: 'echo $BUILD_BRANCH | cut -d \- -f 1'
     env:
@@ -285,19 +289,17 @@ test:
     port: 30000
     dockerfile:
       tag: 
-        user: 03192859189254
-        name: 
-          valueFromCommand: 'echo $BUILD_NAME'
-        version: 
-          valueFromCommand: 'echo $BUILD_BRANCH'
+        user: *general_docker_user
+        name: $BUILD_NAME
+        version: $BUILD_BRANCH
   processes:
     - title: "Starting container"
       commands:
-        - TEST_CONTAINER_ID=$(docker run -d -p 127.0.0.1:${TEST_PORT}:${BUILD_DOCKERFILE_PORTS_MAIN} ${TEST_DOCKERFILE_TAG_USER}/${TEST_DOCKERFILE_TAG_NAME}:${TEST_DOCKERFILE_TAG_VERSION})
-
-    - title: "Injecting test file"
-      commands:
-        - docker exec $TEST_CONTAINER_ID /bin/sh -c "echo '<?php phpinfo(); ?>' > /var/www/html/test.php"
+        - TEST_CONTAINER_ID=$(
+            docker run -d 
+              -p 127.0.0.1:${TEST_PORT}:${BUILD_DOCKERFILE_PORTS_MAIN} 
+              ${TEST_DOCKERFILE_TAG_USER}/${TEST_DOCKERFILE_TAG_NAME}:${TEST_DOCKERFILE_TAG_VERSION}
+          )
 
     - title: "Testing"
       commands:
@@ -306,7 +308,13 @@ test:
         - REQUEST_METHOD=GET
         - MAX_TRIES=150
         - SECONDS_BETWEEN_TRIES=1
-        - c=1; while [ $c -le ${MAX_TRIES} ] && ! cgi-fcgi -bind -connect 127.0.0.1:${TEST_PORT}; do echo "Try $c failed"; sleep ${SECONDS_BETWEEN_TRIES}; ((c++)); done
+        - c=1
+        - while [ $c -le ${MAX_TRIES} ] && ! cgi-fcgi -bind -connect 127.0.0.1:${TEST_PORT}; 
+          do 
+            echo "Try $c failed"; 
+            sleep ${SECONDS_BETWEEN_TRIES}; 
+            ((c++)); 
+          done
 
     - title: "Cleaning"
       commands:
