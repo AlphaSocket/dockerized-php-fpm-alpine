@@ -313,8 +313,3 @@ test:
             sleep ${SECONDS_BETWEEN_TRIES}; 
             ((c++)); 
           done
-
-    - title: "Cleaning"
-      commands:
-        - docker exec $TEST_CONTAINER_ID /bin/sh -c "rm /var/www/html/test.php"
-
