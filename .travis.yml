@@ -1,12 +1,11 @@
 sudo: required
 
-language: python
-
 services:
   - docker
 
 before_install:
   - sudo apt update && sudo apt install curl libfcgi0ldbl -y
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTER;
   - docker build -t 03192859189254/docker-magento-apache-alpine:7.0-dev .
 
 script:
@@ -31,7 +30,6 @@ script:
 
 after_success:
   - if [ "$DOCKER_USERNAME" ]; then
-    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTER;
-    docker tag 03192859189254/docker-magento-apache-alpine:7.0-dev ${DOCKER_REGISTER}/${DOCKER_USERNAME}/docker-magento-apache-alpine:7.0-dev;
-    docker push ${DOCKER_REGISTER}/${DOCKER_USERNAME}/docker-magento-apache-alpine:7.0-dev;
+        docker tag 03192859189254/docker-magento-apache-alpine:7.0-dev ${DOCKER_REGISTER}/${DOCKER_USERNAME}/docker-magento-apache-alpine:7.0-dev;
+        docker push ${DOCKER_REGISTER}/${DOCKER_USERNAME}/docker-magento-apache-alpine:7.0-dev;
     fi
