@@ -3,78 +3,62 @@
 # exit if a command fails
 set -e
 
-source /usr/local/envvars
-
 # Enable extension gd
-if [ True = True ]; then
-    docker-php-ext-enable gd
+if [ $CONFIG_PHP_EXT_GD = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable gd;
 fi
-
 # Enable extension iconv
-if [ True = True ]; then
-    docker-php-ext-enable iconv
+if [ $CONFIG_PHP_EXT_ICONV = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable iconv;
 fi
-
 # Enable extension opcache
-if [ True = True ]; then
-    docker-php-ext-enable opcache
+if [ $CONFIG_PHP_EXT_OPCACHE = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable opcache;
 fi
-
 # Enable extension readline
-if [ True = True ]; then
-    docker-php-ext-enable readline
+if [ $CONFIG_PHP_EXT_READLINE = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable readline;
 fi
-
 # Enable extension soap
-if [ True = True ]; then
-    docker-php-ext-enable soap
+if [ $CONFIG_PHP_EXT_SOAP = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable soap;
 fi
-
 # Enable extension mysqli
-if [ True = True ]; then
-    docker-php-ext-enable mysqli
+if [ $CONFIG_PHP_EXT_MYSQLI = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable mysqli;
 fi
-
 # Enable extension curl
-if [ True = True ]; then
-    docker-php-ext-enable curl
+if [ $CONFIG_PHP_EXT_CURL = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable curl;
 fi
-
 # Enable extension json
-if [ $CONFIG_PHP_EXT_JSON = True ]; then
-    docker-php-ext-enable json
+if [ $CONFIG_PHP_EXT_JSON = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable json;
 fi
-
 # Enable extension mcrypt
-if [ True = True ]; then
-    docker-php-ext-enable mcrypt
+if [ $CONFIG_PHP_EXT_MCRYPT = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable mcrypt;
 fi
-
 # Enable extension mbstring
-if [ True = True ]; then
-    docker-php-ext-enable mbstring
+if [ $CONFIG_PHP_EXT_MBSTRING = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable mbstring;
 fi
-
 # Enable extension sodium
-if [ False = True ]; then
-    docker-php-ext-enable sodium
+if [ $CONFIG_PHP_EXT_SODIUM = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable sodium;
 fi
-
 # Enable extension zip
-if [ True = True ]; then
-    docker-php-ext-enable zip
+if [ $CONFIG_PHP_EXT_ZIP = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable zip;
 fi
-
 # Enable extension redis
-if [ True = True ]; then
-    docker-php-ext-enable redis
+if [ $CONFIG_PHP_EXT_REDIS = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable redis;
 fi
-
 # Enable extension xdebug
-if [ False = True ]; then
-    docker-php-ext-enable xdebug
+if [ $CONFIG_PHP_EXT_XDEBUG = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable xdebug;
 fi
-
 
 
 exit 0
