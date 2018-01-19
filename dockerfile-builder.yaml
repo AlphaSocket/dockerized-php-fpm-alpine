@@ -1,7 +1,6 @@
 project: 
   title: &project_title Magento PHP-FPM Alpine Image build
   codename: &project_codename php-fpm-alpine
-  version: 0.1.0
 
 #
 # Init builder
