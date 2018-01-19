@@ -4,12 +4,14 @@
 FROM php:7.2-fpm-alpine
 
 ENV \
+	GENERAL_DOCKER_USER="03192859189254" \
 	GENERAL_KEYS_TRUE="True" \
 	GENERAL_KEYS_FALSE="False" \
 	GENERAL_KEYS_DEV="dev" \
 	GENERAL_KEYS_PRD="prd" \
-	BUILD_NAME="docker-magento-apache-alpine" \
+	BUILD_NAME="php-fpm-alpine" \
 	BUILD_BRANCH="latest-dev" \
+	BUILD_COMMIT="b36bb9a" \
 	BUILD_VERSION="latest" \
 	BUILD_ENV="dev" \
 	BUILD_PHP_VERSION="7.2" \
