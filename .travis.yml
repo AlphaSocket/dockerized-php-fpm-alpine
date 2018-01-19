@@ -21,9 +21,6 @@ script:
  - c=1
  - while [ $c -le ${MAX_TRIES} ] && ! cgi-fcgi -bind -connect 127.0.0.1:30000; do echo "Try $c failed"; sleep ${SECONDS_BETWEEN_TRIES}; ((c++)); done
 
-# Cleaning
- - docker exec $TEST_CONTAINER_ID /bin/sh -c "rm /var/www/html/test.php"
-
 
 
 after_success:
