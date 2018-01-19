@@ -1,5 +1,5 @@
 project: 
-  title: &project_title Magento PHP-FPM Alpine Image build
+  title: &project_title Dockerized PHP-FPM service on alpine distro
   codename: &project_codename php-fpm-alpine
 
 #
