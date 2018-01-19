@@ -299,12 +299,12 @@ test:
               ${TEST_DOCKERFILE_TAG_USER}/${TEST_DOCKERFILE_TAG_NAME}:${TEST_DOCKERFILE_TAG_VERSION}
           )
 
-    - title: "Testing"
+    - title: "Testing service every second for 5min as docker-php-ext-enable could request packages from internet slowing down the config"
       commands:
         - SCRIPT_NAME=/test.php
         - SCRIPT_FILENAME=/test.php
         - REQUEST_METHOD=GET
-        - MAX_TRIES=150
+        - MAX_TRIES=300
         - SECONDS_BETWEEN_TRIES=1
         - c=1
         - while [ $c -le ${MAX_TRIES} ] && ! cgi-fcgi -bind -connect 127.0.0.1:${TEST_PORT}; 
