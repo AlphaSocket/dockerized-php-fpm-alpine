@@ -11,7 +11,7 @@ ENV \
 	GENERAL_KEYS_PRD="prd" \
 	BUILD_NAME="php-fpm-alpine" \
 	BUILD_BRANCH="7.0-dev" \
-	BUILD_COMMIT="ff50631" \
+	BUILD_COMMIT="d650818" \
 	BUILD_VERSION="7.0" \
 	BUILD_ENV="dev" \
 	BUILD_PHP_VERSION="7.0" \
