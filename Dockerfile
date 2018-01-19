@@ -11,7 +11,7 @@ ENV \
 	GENERAL_KEYS_PRD="prd" \
 	BUILD_NAME="php-fpm-alpine" \
 	BUILD_BRANCH="latest" \
-	BUILD_COMMIT="4625b5f" \
+	BUILD_COMMIT="8b82021" \
 	BUILD_VERSION="latest" \
 	BUILD_ENV="prd" \
 	BUILD_PHP_VERSION="7.2" \
