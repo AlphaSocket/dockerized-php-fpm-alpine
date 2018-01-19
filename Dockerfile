@@ -11,7 +11,7 @@ ENV \
 	GENERAL_KEYS_PRD="prd" \
 	BUILD_NAME="php-fpm-alpine" \
 	BUILD_BRANCH="7.2-dev" \
-	BUILD_COMMIT="d3ddf0d" \
+	BUILD_COMMIT="77355da" \
 	BUILD_VERSION="7.2" \
 	BUILD_ENV="dev" \
 	BUILD_PHP_VERSION="7.2" \
@@ -20,7 +20,6 @@ ENV \
 	BUILD_DOCKERFILE_IMAGE="php:7.2-fpm-alpine" \
 	BUILD_DOCKERFILE_PORTS_MAIN="9000" \
 	BUILD_DOCKERFILE_PORTS_ADDITIONAL="9001" \
-	BUILD_DOCKERFILE_ENTRYPOINT="/bin/sh", "-c" \
 	BUILD_DOCKERFILE_CMD="/usr/local/bin/docker-php-entrypoint php-fpm" \
 	SETUP_DEPENDENCIES_COMMON="binutils-libs binutils" \
 	SETUP_DEPENDENCIES_BUILD="m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c" \
