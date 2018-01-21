@@ -1,6 +1,6 @@
 # Alphasocket/dockerized-php-fpm-alpine
 #### php-fpm-alpine
-[![](https://travis-ci.org/AlphaSocket/dockerized-php-fpm-alpine.svg?branch=latest )]() [![](https://images.microbadger.com/badges/image/03192859189254/dockerized-php-fpm-alpine:latest.svg)](https://microbadger.com/images/03192859189254/dockerized-php-fpm-alpine:latest ) [![](https://images.microbadger.com/badges/version/03192859189254/dockerized-php-fpm-alpine:latest.svg)](https://microbadger.com/images/03192859189254/dockerized-php-fpm-alpine:latest)
+[![](https://travis-ci.org/AlphaSocket/dockerized-php-fpm-alpine.svg?branch=7.0 )]() [![](https://images.microbadger.com/badges/image/03192859189254/dockerized-php-fpm-alpine:7.0.svg)](https://microbadger.com/images/03192859189254/dockerized-php-fpm-alpine:7.0 ) [![](https://images.microbadger.com/badges/version/03192859189254/dockerized-php-fpm-alpine:7.0.svg)](https://microbadger.com/images/03192859189254/dockerized-php-fpm-alpine:7.0)
 
 Dockerized PHP-FPM service on alpine distro
 
