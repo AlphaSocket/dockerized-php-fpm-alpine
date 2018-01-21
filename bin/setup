@@ -5,8 +5,9 @@
 set -e
 
 # Install dependencies
-apk --no-cache add $SETUP_DEPENDENCIES_COMMON $SETUP_DEPENDENCIES_BUILD
-
+if [ ! "$SETUP_DEPENDENCIES_CONFIG$SETUP_DEPENDENCIES_SETUP" = "" ]; then
+    apk add --no-cache $SETUP_DEPENDENCIES_CONFIG $SETUP_DEPENDENCIES_SETUP;
+fi
 # Install PHP extension gd
 if [ $SETUP_PHP_EXT_GD = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev musl musl-dev;
