@@ -56,9 +56,9 @@ build:
 setup:
   # Setup env 
   envvars:
-    dependencies: 
-      common: "binutils-libs binutils"
-      build: "m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c"
+    dependencies:
+      setup: "binutils-libs binutils m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c"
+      config:
     php: &php_ext
       ext: 
         curl: True
@@ -81,8 +81,9 @@ setup:
   # Setup Processes
   processes:
     - title: "Install dependencies"
+      shell_condition: '! "$SETUP_DEPENDENCIES_CONFIG$SETUP_DEPENDENCIES_SETUP" = ""'
       commands: 
-        - "apk --no-cache add $SETUP_DEPENDENCIES_COMMON $SETUP_DEPENDENCIES_BUILD"
+        - "apk add --no-cache $SETUP_DEPENDENCIES_CONFIG $SETUP_DEPENDENCIES_SETUP"
 
     - title: "Install PHP extension gd"
       shell_condition: "$SETUP_PHP_EXT_GD = $GENERAL_KEYS_TRUE"
