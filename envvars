@@ -9,7 +9,7 @@ GENERAL_KEYS_PRD='prd'
 # Build
 BUILD_NAME='php-fpm-alpine'
 BUILD_BRANCH='7.1-dev'
-BUILD_COMMIT='b903bad'
+BUILD_COMMIT='6fae672'
 BUILD_VERSION='7.1'
 BUILD_ENV='dev'
 BUILD_PHP_VERSION='7.1'
@@ -22,8 +22,8 @@ BUILD_DOCKERFILE_CMD='/usr/local/bin/docker-php-entrypoint php-fpm'
 
 
 # Setup
-SETUP_DEPENDENCIES_COMMON='binutils-libs binutils'
-SETUP_DEPENDENCIES_BUILD='m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c'
+SETUP_DEPENDENCIES_SETUP='binutils-libs binutils m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c'
+SETUP_DEPENDENCIES_CONFIG='None'
 SETUP_PHP_EXT_CURL='True'
 SETUP_PHP_EXT_GD='True'
 SETUP_PHP_EXT_ICONV='True'
