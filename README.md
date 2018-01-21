@@ -1,6 +1,6 @@
 # Alphasocket/dockerized-php-fpm-alpine
 #### php-fpm-alpine
-[![](https://travis-ci.org/AlphaSocket/dockerized-php-fpm-alpine.svg?branch=latest )]() [![](https://images.microbadger.com/badges/image/03192859189254/dockerized-php-fpm-alpine:latest.svg)](https://microbadger.com/images/03192859189254/dockerized-php-fpm-alpine:latest ) [![](https://images.microbadger.com/badges/version/03192859189254/dockerized-php-fpm-alpine:latest.svg)](https://microbadger.com/images/03192859189254/dockerized-php-fpm-alpine:latest)
+[![](https://travis-ci.org/AlphaSocket/dockerized-php-fpm-alpine.svg?branch=7.1-dev )]() [![](https://images.microbadger.com/badges/image/03192859189254/dockerized-php-fpm-alpine:7.1-dev.svg)](https://microbadger.com/images/03192859189254/dockerized-php-fpm-alpine:7.1-dev ) [![](https://images.microbadger.com/badges/version/03192859189254/dockerized-php-fpm-alpine:7.1-dev.svg)](https://microbadger.com/images/03192859189254/dockerized-php-fpm-alpine:7.1-dev)
 
 Dockerized PHP-FPM service on alpine distro
 
@@ -34,7 +34,7 @@ CONFIG_PHP_EXT_REDIS='True'
 CONFIG_PHP_EXT_SOAP='True'
 CONFIG_PHP_EXT_SODIUM='False'
 CONFIG_PHP_EXT_XML='True'
-CONFIG_PHP_EXT_XDEBUG='False'
+CONFIG_PHP_EXT_XDEBUG='True'
 CONFIG_PHP_EXT_ZIP='True'
 ~~~
 
