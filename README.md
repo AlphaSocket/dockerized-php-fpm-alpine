@@ -18,6 +18,27 @@ Dockerized PHP-FPM service on alpine distro
 
 
 ## Packages installed
+- Setup dependencies:
+  + binutils-libs
+  + binutils
+  + m4
+  + perl
+  + autoconf
+  + libmagic
+  + file
+  + libgcc
+  + libstdc++
+  + gmp
+  + libgomp
+  + libatomic
+  + mpfr3
+  + gcc
+  + libc-dev
+  + g++
+  + make
+  + re2c
+- Config dependencies:
+  + None
 
 
 ## Configurable envvars
