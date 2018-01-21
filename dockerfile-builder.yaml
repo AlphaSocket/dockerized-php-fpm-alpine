@@ -1,6 +1,7 @@
 project: 
-  title: &project_title Dockerized PHP-FPM service on alpine distro
+  title: &project_title Alphasocket/dockerized-php-fpm-alpine
   codename: &project_codename php-fpm-alpine
+  description: Dockerized PHP-FPM service on alpine distro
 
 #
 # Init builder
