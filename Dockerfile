@@ -14,7 +14,7 @@ ENV \
 	GENERAL_KEYS_PRD="prd" \
 	BUILD_NAME="php-fpm-alpine" \
 	BUILD_BRANCH="7.1" \
-	BUILD_COMMIT="ec3923f" \
+	BUILD_COMMIT="ce8adf9" \
 	BUILD_VERSION="7.1" \
 	BUILD_ENV="prd" \
 	BUILD_PHP_VERSION="7.1" \
@@ -70,5 +70,5 @@ ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["/usr/local/bin/config && /usr/local/bin/docker-php-entrypoint php-fpm"]
 
 LABEL \
-    org.label-schema.vcs-ref=ec3923f \
+    org.label-schema.vcs-ref=ce8adf9 \
     org.label-schema.vcs-url="https://github.com/AlphaSocket/dockerized-php-fpm-alpine"
