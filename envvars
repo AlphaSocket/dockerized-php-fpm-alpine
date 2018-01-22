@@ -9,7 +9,7 @@ GENERAL_KEYS_PRD='prd'
 # Build
 BUILD_NAME='php-fpm-alpine'
 BUILD_BRANCH='7.0-dev'
-BUILD_COMMIT='b0aae6d'
+BUILD_COMMIT='ac82ccd'
 BUILD_VERSION='7.0'
 BUILD_ENV='dev'
 BUILD_PHP_VERSION='7.0'
