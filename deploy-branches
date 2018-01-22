@@ -1,0 +1,64 @@
+#!/bin/bash
+#
+# Deploy master branch merging in others branches to build different versions of docker images
+#
+
+set -e 
+
+GIT_BRANCH_MASTER='master'
+GIT_BRANCH_DEVELOP='develop'
+BASEDIR=$(dirname "$0")
+REPO_NAME=${BASEDIR}
+GIT_USER='alphasocket'
+CUR_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+GIT_BRANCHES=$(git for-each-ref --format='%(refname:short)' refs/heads/ | xargs)
+
+if [ !$GITHUB_PASS = '' ]; then
+    pass=:$GITHUB_PASS
+else
+    echo -ne "Set GITHUB_PASS to push branches automatically:\n GITHUB_PASS={password}\n"
+fi
+
+#
+# Commit master
+#
+if [ $CUR_BRANCH == $GIT_BRANCH_MASTER ] || [ $CUR_BRANCH == $GIT_BRANCH_DEVELOP ]; then
+    git add . 
+    git commit
+else
+    echo -ne "$0 can be launched only from master and develop\n"
+    exit 1
+fi
+
+#
+# Deploy in other branches
+#
+for branch in $GIT_BRANCHES
+do
+    if [ $branch == $GIT_BRANCH_MASTER ] || [ $branch == $GIT_BRANCH_DEVELOP ]; then
+        continue
+    fi
+
+    echo -ne "-- Updating branch $branch -- \n"
+    git checkout --force $branch
+    git pull origin $branch
+    git merge master --no-commit
+    chmod +x ./test
+    git add .
+    git commit -m "Merged master in $branch"
+    $(which dockerfile-build)
+    git add .
+    git commit -m "Re-built dockerfile"
+    echo -ne "-- Updated branch $branch -- \n\n"
+done
+
+#
+# Push
+#
+git push https://$GIT_USER$pass@github.com/$GIT_USER/$REPO_NAME --all
+git push https://$GIT_USER$pass@github.com/$GIT_USER/$REPO_NAME --tags
+
+#
+# Reset
+#
+git checkout $GIT_BRANCH_MASTER --force
