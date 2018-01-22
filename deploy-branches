@@ -7,7 +7,7 @@ set -e
 
 GIT_BRANCH_MASTER='master'
 GIT_BRANCH_DEVELOP='develop'
-BASEDIR=$(dirname "$0")
+BASEDIR=${PWD##*/}
 REPO_NAME=${BASEDIR}
 GIT_USER='alphasocket'
 CUR_BRANCH=$(git rev-parse --abbrev-ref HEAD)
