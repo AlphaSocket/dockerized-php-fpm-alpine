@@ -58,7 +58,7 @@ setup:
   envvars:
     dependencies:
       setup: "binutils-libs binutils m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c"
-      config:
+      config: ""
     php: &php_ext
       ext: 
         curl: True
