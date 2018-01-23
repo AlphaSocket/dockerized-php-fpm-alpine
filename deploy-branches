@@ -15,10 +15,10 @@ CUR_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 GIT_BRANCHES=$(git for-each-ref --format='%(refname:short)' refs/heads/ | xargs)
 pass=""
 
-if [ -z "br1RilKpAmi2XVDyp4FN" ] ; then
+if [ -z "$GITHUB_PASS" ] ; then
     echo -ne "Set GITHUB_PASS to push branches automatically:\n export GITHUB_PASS={password}\n"
 else
-    pass=":br1RilKpAmi2XVDyp4FN"
+    pass=":$GITHUB_PASS"
 fi
 
 #
@@ -51,20 +51,17 @@ do
     git pull origin $branch
     git merge master --no-commit 
     git add .
-    git commit -m "Merged master in $branch" --author "$GIT_AUTHOR"
+    rm -f .gitignore
+    git commit -m "Merged master in $branch" --allow-empty --author "$GIT_AUTHOR"
     $(which dockerfile-build)
     git add .
-    git commit -m "Re-built dockerfile" --author "$GIT_AUTHOR"
+    git commit -m "Re-built dockerfile" --allow-empty --author "$GIT_AUTHOR"
     echo -ne "-- Updated branch $branch -- \n\n"
 done
 
 #
 # Push
 #
+git checkout $GIT_BRANCH_MASTER --force
 git push https://$GIT_USER$pass@github.com/$GIT_USER/$REPO_NAME --all
 git push https://$GIT_USER$pass@github.com/$GIT_USER/$REPO_NAME --tags
-
-#
-# Reset
-#
-git checkout $GIT_BRANCH_MASTER --force
