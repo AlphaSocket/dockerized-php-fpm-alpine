@@ -5,6 +5,7 @@ services:
 
 before_install:
   - sudo apt update && sudo apt install curl libfcgi0ldbl -y
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTER;
   - docker build 
         --no-cache 
         -t 03192859189254/php-fpm-alpine:5.6
@@ -19,15 +20,15 @@ script:
  - SCRIPT_NAME=/test.php
  - SCRIPT_FILENAME=/test.php
  - REQUEST_METHOD=GET
+ - CONDITION="cgi-fcgi -bind -connect 127.0.0.1:30000"
  - MAX_TRIES=300
  - SECONDS_BETWEEN_TRIES=1
- - c=1
- - while [ $c -le ${MAX_TRIES} ] && ! cgi-fcgi -bind -connect 127.0.0.1:30000; do echo "Try $c failed"; sleep ${SECONDS_BETWEEN_TRIES}; ((c++)); done
+ - c=0
+ - while ! eval "$CONDITION"; do if [ $c -ge ${MAX_TRIES} ]; then exit 1; else c=$(($c + 1)); fi; echo "Try $c failed"; sleep ${SECONDS_BETWEEN_TRIES}; done
 
 
 
 after_success:
-  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTER;
   - if [ "$DOCKER_USERNAME" ]; then
         docker tag 03192859189254/php-fpm-alpine:5.6 ${DOCKER_REGISTER}/${DOCKER_USERNAME}/php-fpm-alpine:5.6;
         docker push ${DOCKER_REGISTER}/${DOCKER_USERNAME}/php-fpm-alpine:5.6;

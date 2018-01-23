@@ -1,0 +1,54 @@
+#!/bin/sh
+
+#
+# Local test script to build and test docker image
+#
+
+# exit if a command fails
+set -e
+
+CURL=$(which curl)
+DOCKER=$(which docker)
+
+if [ CURL = '' ]; then
+    echo 'The package curl is required\n'
+    exit 1
+fi
+
+if [ DOCKER = '' ]; then
+    echo 'Docker is required\n'
+    exit 1
+fi
+
+echo "#\n# Building image\n#\n"
+docker build \
+    --no-cache \
+    -t 03192859189254/php-fpm-alpine:5.6 \
+    --build-arg BUILD_COMMIT=`git rev-parse --short HEAD` \
+    --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+    .
+
+echo "#\n# Cleaning docker\n#\n"
+running_containers=$(docker ps -aq)
+if [ "$running_containers" ] 
+    then
+        docker stop $running_containers -t 0 && docker system prune -f
+fi
+
+echo "#\n# Running test\n#\n"
+# Starting container
+TEST_CONTAINER_ID=$( docker run -d -p 127.0.0.1:30000:9000 03192859189254/php-fpm-alpine:5.6 )
+
+# Testing service every second for 5min as docker-php-ext-enable could request packages from internet slowing down the config
+SCRIPT_NAME=/test.php
+SCRIPT_FILENAME=/test.php
+REQUEST_METHOD=GET
+CONDITION="cgi-fcgi -bind -connect 127.0.0.1:30000"
+MAX_TRIES=300
+SECONDS_BETWEEN_TRIES=1
+c=0
+while ! eval "$CONDITION"; do if [ $c -ge ${MAX_TRIES} ]; then exit 1; else c=$(($c + 1)); fi; echo "Try $c failed"; sleep ${SECONDS_BETWEEN_TRIES}; done
+
+
+
+exit 0
