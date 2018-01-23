@@ -14,7 +14,7 @@ ENV \
 	GENERAL_KEYS_PRD="prd" \
 	BUILD_NAME="php-fpm-alpine" \
 	BUILD_BRANCH="7.0-dev" \
-	BUILD_COMMIT="db6cfb7" \
+	BUILD_COMMIT="9a405f5" \
 	BUILD_VERSION="7.0" \
 	BUILD_ENV="dev" \
 	BUILD_PHP_VERSION="7.0" \
@@ -25,7 +25,7 @@ ENV \
 	BUILD_DOCKERFILE_PORTS_ADDITIONAL="9001" \
 	BUILD_DOCKERFILE_CMD="/usr/local/bin/docker-php-entrypoint php-fpm" \
 	SETUP_DEPENDENCIES_SETUP="binutils-libs binutils m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c" \
-	SETUP_DEPENDENCIES_CONFIG="None" \
+	SETUP_DEPENDENCIES_CONFIG="" \
 	SETUP_PHP_EXT_CURL="True" \
 	SETUP_PHP_EXT_GD="True" \
 	SETUP_PHP_EXT_ICONV="True" \
@@ -70,5 +70,5 @@ ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["/usr/local/bin/config && /usr/local/bin/docker-php-entrypoint php-fpm"]
 
 LABEL \
-    org.label-schema.vcs-ref=db6cfb7 \
+    org.label-schema.vcs-ref=9a405f5 \
     org.label-schema.vcs-url="https://github.com/AlphaSocket/dockerized-php-fpm-alpine"
