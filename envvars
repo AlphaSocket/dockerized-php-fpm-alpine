@@ -9,7 +9,7 @@ GENERAL_KEYS_PRD='prd'
 # Build
 BUILD_NAME='php-fpm-alpine'
 BUILD_BRANCH='7.2'
-BUILD_COMMIT='391bb82'
+BUILD_COMMIT='be07c0c'
 BUILD_VERSION='7.2'
 BUILD_ENV='prd'
 BUILD_PHP_VERSION='7.2'
@@ -23,7 +23,7 @@ BUILD_DOCKERFILE_CMD='/usr/local/bin/docker-php-entrypoint php-fpm'
 
 # Setup
 SETUP_DEPENDENCIES_SETUP='binutils-libs binutils m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c'
-SETUP_DEPENDENCIES_CONFIG='None'
+SETUP_DEPENDENCIES_CONFIG=''
 SETUP_PHP_EXT_CURL='True'
 SETUP_PHP_EXT_GD='True'
 SETUP_PHP_EXT_ICONV='True'
