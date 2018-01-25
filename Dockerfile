@@ -7,8 +7,8 @@ ARG BUILD_COMMIT
 ARG BUILD_TIME
 
 ENV \
-	 BUILD_COMMIT=$BUILD_COMMIT \
-	 BUILD_DATE=$BUILD_DATE \
+	BUILD_COMMIT=$BUILD_COMMIT \
+	BUILD_DATE=$BUILD_DATE \
 	GENERAL_DOCKER_USER="03192859189254" \
 	GENERAL_KEYS_TRUE="True" \
 	GENERAL_KEYS_FALSE="False" \
@@ -16,7 +16,7 @@ ENV \
 	GENERAL_KEYS_PRD="prd" \
 	BUILD_NAME="php-fpm-alpine" \
 	BUILD_BRANCH="7.0-dev" \
-	BUILD_COMMIT="a803345" \
+	BUILD_COMMIT="7c1b2da" \
 	BUILD_VERSION="7.0" \
 	BUILD_ENV="dev" \
 	BUILD_PHP_VERSION="7.0" \
@@ -66,11 +66,11 @@ RUN chmod +rx /usr/local/bin/setup && \
     sync && \
     /usr/local/bin/setup 
 
-EXPOSE 9000 9001
+EXPOSE 9000 9000
 
 ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["/usr/local/bin/config && /usr/local/bin/docker-php-entrypoint php-fpm"]
 
 LABEL \
-    org.label-schema.vcs-ref=a803345 \
+    org.label-schema.vcs-ref=7c1b2da \
     org.label-schema.vcs-url="https://github.com/AlphaSocket/dockerized-php-fpm-alpine"
