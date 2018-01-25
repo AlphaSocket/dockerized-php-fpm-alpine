@@ -37,8 +37,6 @@ Dockerized PHP-FPM service on alpine distro
   + g++
   + make
   + re2c
-- Config dependencies:
-  + None
 
 
 ## Configurable envvars
