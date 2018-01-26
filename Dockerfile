@@ -16,7 +16,7 @@ ENV \
 	GENERAL_KEYS_PRD="prd" \
 	BUILD_NAME="php-fpm-alpine" \
 	BUILD_BRANCH="7.2-dev" \
-	BUILD_COMMIT="9a2e3f7" \
+	BUILD_COMMIT="c435246" \
 	BUILD_VERSION="7.2" \
 	BUILD_ENV="dev" \
 	BUILD_PHP_VERSION="7.2" \
@@ -57,20 +57,28 @@ ENV \
 	CONFIG_PHP_EXT_XDEBUG="True" \
 	CONFIG_PHP_EXT_ZIP="True"
 
-ADD envvars /usr/local/envvars
-ADD bin/setup /usr/local/bin/setup
-ADD bin/config /usr/local/bin/config
+RUN if [ ! -d "/usr/local/bin/setup" ]; then \
+        mkdir -p /usr/local/bin/setup; \
+    fi \
+    && \
+    if [ ! -d "/usr/local/bin/config" ]; then \
+        mkdir -p /usr/local/bin/config; \
+    fi
 
-RUN chmod +rx /usr/local/bin/setup && \
-    chmod +rx /usr/local/bin/config && \
+ADD bin/docker-config /usr/local/bin/docker-config
+ADD bin/setup /usr/local/bin/setup/1516964395
+ADD bin/config /usr/local/bin/config/1516964395
+
+RUN chmod +x -R /usr/local/bin && \
     sync && \
-    /usr/local/bin/setup 
+    /usr/local/bin/setup/1516964395 
 
 EXPOSE 9000 9000
 
+
 ENTRYPOINT ["/bin/sh", "-c"]
-CMD ["/usr/local/bin/config && /usr/local/bin/docker-php-entrypoint php-fpm"]
+CMD ["/usr/local/bin/docker-config && /usr/local/bin/docker-php-entrypoint php-fpm"]
 
 LABEL \
-    org.label-schema.vcs-ref=9a2e3f7 \
+    org.label-schema.vcs-ref=c435246 \
     org.label-schema.vcs-url="https://github.com/AlphaSocket/dockerized-php-fpm-alpine"
