@@ -66,6 +66,7 @@ setup:
         iconv: True
         mysqli: True
         mbstring: True
+        pdo_mysql: True
         mcrypt:
           valueFromCommand: '[ "$BUILD_PHP_VERSION" = "7.2" ] && echo $GENERAL_KEYS_FALSE || echo $GENERAL_KEYS_TRUE'
         opcache: True
@@ -146,6 +147,14 @@ setup:
         - apk --no-cache add libxml2-dev
         # Install
         - docker-php-ext-install mysqli
+
+    - title: "Install PHP extension pdo_mysql"
+      shell_condition: "$SETUP_PHP_EXT_PDO_MYSQL = $GENERAL_KEYS_TRUE"
+      commands: 
+        # Dependencies
+        - apk --no-cache add libxml2-dev
+        # Install
+        - docker-php-ext-install pdo_mysql
 
     - title: "Install PHP extension curl"
       shell_condition: "$SETUP_PHP_EXT_CURL = $GENERAL_KEYS_TRUE"
@@ -243,6 +252,11 @@ config:
       shell_condition: "$CONFIG_PHP_EXT_MYSQLI = $GENERAL_KEYS_TRUE"
       commands:
         - docker-php-ext-enable mysqli
+
+    - title: "Enable extension pdo_mysql"
+      shell_condition: "$CONFIG_PHP_EXT_PDO_MYSQL = $GENERAL_KEYS_TRUE"
+      commands:
+        - docker-php-ext-enable pdo_mysql
 
     - title: "Enable extension curl"
       shell_condition: "$CONFIG_PHP_EXT_CURL = $GENERAL_KEYS_TRUE"
