@@ -27,6 +27,10 @@ fi
 if [ $CONFIG_PHP_EXT_MYSQLI = $GENERAL_KEYS_TRUE ]; then
     docker-php-ext-enable mysqli;
 fi
+# Enable extension pdo_mysql
+if [ $CONFIG_PHP_EXT_PDO_MYSQL = $GENERAL_KEYS_TRUE ]; then
+    docker-php-ext-enable pdo_mysql;
+fi
 # Enable extension curl
 if [ $CONFIG_PHP_EXT_CURL = $GENERAL_KEYS_TRUE ]; then
     docker-php-ext-enable curl;
