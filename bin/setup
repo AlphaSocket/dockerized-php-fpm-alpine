@@ -44,6 +44,11 @@ if [ $SETUP_PHP_EXT_MYSQLI = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add libxml2-dev;
     docker-php-ext-install mysqli;
 fi
+# Install PHP extension pdo_mysql
+if [ $SETUP_PHP_EXT_PDO_MYSQL = $GENERAL_KEYS_TRUE ]; then
+    apk --no-cache add libxml2-dev;
+    docker-php-ext-install pdo_mysql;
+fi
 # Install PHP extension curl
 if [ $SETUP_PHP_EXT_CURL = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add curl-dev;
