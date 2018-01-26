@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Run all confiugration scripts
+#
+set -e
+
+for config_script in /usr/local/bin/config/*; 
+do
+    $config_script; 
+done;
+
+exit 0
