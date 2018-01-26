@@ -16,7 +16,7 @@ ENV \
 	GENERAL_KEYS_PRD="prd" \
 	BUILD_NAME="php-fpm-alpine" \
 	BUILD_BRANCH="5.6" \
-	BUILD_COMMIT="d217fcb" \
+	BUILD_COMMIT="de71ea1" \
 	BUILD_VERSION="5.6" \
 	BUILD_ENV="prd" \
 	BUILD_PHP_VERSION="5.6" \
@@ -33,6 +33,7 @@ ENV \
 	SETUP_PHP_EXT_ICONV="True" \
 	SETUP_PHP_EXT_MYSQLI="True" \
 	SETUP_PHP_EXT_MBSTRING="True" \
+	SETUP_PHP_EXT_PDO_MYSQL="True" \
 	SETUP_PHP_EXT_MCRYPT="True" \
 	SETUP_PHP_EXT_OPCACHE="True" \
 	SETUP_PHP_EXT_READLINE="True" \
@@ -47,6 +48,7 @@ ENV \
 	CONFIG_PHP_EXT_ICONV="True" \
 	CONFIG_PHP_EXT_MYSQLI="True" \
 	CONFIG_PHP_EXT_MBSTRING="True" \
+	CONFIG_PHP_EXT_PDO_MYSQL="True" \
 	CONFIG_PHP_EXT_MCRYPT="True" \
 	CONFIG_PHP_EXT_OPCACHE="True" \
 	CONFIG_PHP_EXT_READLINE="True" \
@@ -66,12 +68,12 @@ RUN if [ ! -d "/usr/local/bin/setup" ]; then \
     fi
 
 ADD bin/docker-config /usr/local/bin/docker-config
-ADD bin/setup /usr/local/bin/setup/1516964379
-ADD bin/config /usr/local/bin/config/1516964379
+ADD bin/setup /usr/local/bin/setup/1516981821
+ADD bin/config /usr/local/bin/config/1516981821
 
 RUN chmod +x -R /usr/local/bin && \
     sync && \
-    /usr/local/bin/setup/1516964379 
+    /usr/local/bin/setup/1516981821 
 
 EXPOSE 9000 9000
 
@@ -80,5 +82,5 @@ ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["/usr/local/bin/docker-config && /usr/local/bin/docker-php-entrypoint php-fpm"]
 
 LABEL \
-    org.label-schema.vcs-ref=d217fcb \
+    org.label-schema.vcs-ref=de71ea1 \
     org.label-schema.vcs-url="https://github.com/AlphaSocket/dockerized-php-fpm-alpine"
