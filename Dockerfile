@@ -14,7 +14,7 @@ ENV \
 	GENERAL_KEYS_PRD="prd" \
 	BUILD_NAME="php-fpm-alpine" \
 	BUILD_BRANCH="5.6" \
-	BUILD_COMMIT="bbbf220" \
+	BUILD_COMMIT="2dddd68" \
 	BUILD_VERSION="5.6" \
 	BUILD_ENV="prd" \
 	BUILD_PHP_VERSION="5.6" \
@@ -66,12 +66,12 @@ RUN if [ ! -d "/usr/local/bin/setup" ]; then \
     fi
 
 ADD bin/docker-config /usr/local/bin/docker-config
-ADD bin/setup /usr/local/bin/setup/1517140767
-ADD bin/config /usr/local/bin/config/1517140767
+ADD bin/setup /usr/local/bin/setup/1517140780
+ADD bin/config /usr/local/bin/config/1517140780
 
 RUN chmod +x -R /usr/local/bin && \
     sync && \
-    /usr/local/bin/setup/1517140767 
+    /usr/local/bin/setup/1517140780 
 
 EXPOSE 9000 9000
 
@@ -80,5 +80,5 @@ ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["/usr/local/bin/docker-config && /usr/local/bin/docker-php-entrypoint php-fpm"]
 
 LABEL \
-    org.label-schema.vcs-ref=bbbf220 \
+    org.label-schema.vcs-ref=2dddd68 \
     org.label-schema.vcs-url="https://github.com/AlphaSocket/dockerized-php-fpm-alpine"
