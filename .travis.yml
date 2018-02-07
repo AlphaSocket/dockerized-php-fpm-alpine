@@ -1,10 +1,20 @@
-sudo: required
+sudo: false
+
+language: python
+
+cache:
+    apt: true
+
+addons:
+    apt:
+        packages:
+            - curl
+            - libfcgi0ldbl
 
 services:
   - docker
 
 before_install:
-  - sudo apt update && sudo apt install curl libfcgi0ldbl -y
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTER;
   - docker build 
         --no-cache 
