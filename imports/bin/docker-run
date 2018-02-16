@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# Run command
+#
+set -e
+
+# Configuration
+$(which docker-config)
+
+echo "### Starting container service"
+sh -c "/usr/local/bin/docker-php-entrypoint php-fpm"
+
+# Container command is failed if exiting here
+exit $?
