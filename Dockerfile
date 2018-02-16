@@ -1,29 +1,36 @@
 #
 # Do not change content here, image automatically built
 #
-FROM php:7.0-fpm-alpine
+FROM php:OrderedDict([('valueFromCommand', '[ "$BUILD_VERSION" = "latest" ] && echo 7.2 || echo $BUILD_VERSION')])-fpm-alpine
 
 ARG BUILD_COMMIT
 ARG BUILD_DATE
 
 ENV \
-	GENERAL_DOCKER_USER="03192859189254" \
+	GENERAL_DOCKER_USERS_DEV="03192859189254" \
+	GENERAL_DOCKER_USERS_PRD="alphasocket" \
+	GENERAL_DOCKER_USER="alphasocket" \
+	GENERAL_DOCKER_REGISTRIES_DEV="docker.io" \
+	GENERAL_DOCKER_REGISTRIES_PRD="docker.io" \
+	GENERAL_DOCKER_REGISTRY="docker.io" \
 	GENERAL_KEYS_TRUE="True" \
 	GENERAL_KEYS_FALSE="False" \
 	GENERAL_KEYS_DEV="dev" \
 	GENERAL_KEYS_PRD="prd" \
+	BUILD_USER="03192859189254" \
+	BUILD_REGISTRY="docker.io" \
 	BUILD_NAME="php-fpm-alpine" \
+	BUILD_REPO="https://github.com/alphaSocket/dockerized-php-fpm-alpine" \
 	BUILD_BRANCH="7.0" \
-	BUILD_COMMIT="aa7b8e4" \
 	BUILD_VERSION="7.0" \
 	BUILD_ENV="prd" \
+	BUILD_FROM="php:OrderedDict([('valueFromCommand', '[ "$BUILD_VERSION" = "latest" ] && echo 7.2 || echo $BUILD_VERSION')])-fpm-alpine" \
+	BUILD_PORTS_MAIN="9000" \
+	BUILD_PORTS_ADDITIONAL="" \
 	BUILD_PHP_VERSION="7.0" \
 	BUILD_PHP_FPM_PORT="9000" \
 	BUILD_PHP_XDEBUG_PORT="9001" \
-	BUILD_DOCKERFILE_IMAGE="php:7.0-fpm-alpine" \
-	BUILD_DOCKERFILE_PORTS_MAIN="9000" \
-	BUILD_DOCKERFILE_PORTS_ADDITIONAL="" \
-	BUILD_DOCKERFILE_CMD="/usr/local/bin/docker-php-entrypoint php-fpm" \
+	BUILD_CMD="/usr/local/bin/docker-php-entrypoint php-fpm" \
 	SETUP_DEPENDENCIES_SETUP="binutils-libs binutils m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c" \
 	SETUP_DEPENDENCIES_CONFIG="" \
 	SETUP_PHP_EXT_CURL="True" \
@@ -41,6 +48,9 @@ ENV \
 	SETUP_PHP_EXT_XML="True" \
 	SETUP_PHP_EXT_XDEBUG="False" \
 	SETUP_PHP_EXT_ZIP="True" \
+	CONFIG_REDINESS_TEST="true" \
+	CONFIG_LIVENESS_TEST="true" \
+	CONFIG_PATHS_CONTAINER_STATUS="/tmp/container_status" \
 	CONFIG_PHP_EXT_CURL="True" \
 	CONFIG_PHP_EXT_GD="True" \
 	CONFIG_PHP_EXT_ICONV="True" \
@@ -65,21 +75,18 @@ RUN if [ ! -d "/usr/local/bin/setup" ]; then \
         mkdir -p /usr/local/bin/config; \
     fi
 
-ADD bin/docker-config /usr/local/bin/docker-config
-ADD bin/setup /usr/local/bin/setup/1518035673
-ADD bin/config /usr/local/bin/config/1518035673
 
 
 RUN chmod +x -R /usr/local/bin && \
     sync && \
-    /usr/local/bin/setup/1518035673 1>/dev/stdout 2>/dev/stderr
+    /usr/local/bin/setup/1518822539 1>/dev/stdout 2>/dev/stderr
 
 EXPOSE 9000 
 
 
 ENTRYPOINT ["/bin/sh", "-c"]
-CMD ["/usr/local/bin/docker-config && /usr/local/bin/docker-php-entrypoint php-fpm"]
+CMD ["/usr/local/bin/docker-run"]
 
 LABEL \
-    org.label-schema.vcs-ref=aa7b8e4 \
-    org.label-schema.vcs-url="https://github.com/AlphaSocket/dockerized-php-fpm-alpine"
+    org.label-schema.vcs-ref="$BUILD_COMMIT" \
+    org.label-schema.vcs-url="https://github.com/alphaSocket/dockerized-php-fpm-alpine"
