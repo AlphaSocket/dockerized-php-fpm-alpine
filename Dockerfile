@@ -79,13 +79,13 @@ ADD imports/bin/docker-config /usr/local/bin/docker-config
 ADD imports/bin/docker-run /usr/local/bin/docker-run
 ADD imports/bin/docker-rediness-test /usr/local/bin/docker-rediness-test
 ADD imports/bin/docker-liveness-test /usr/local/bin/docker-liveness-test
-ADD imports/bin/setup /usr/local/bin/setup/1518822890
-ADD imports/bin/config /usr/local/bin/config/1518822890
+ADD imports/bin/setup /usr/local/bin/setup/1518822963
+ADD imports/bin/config /usr/local/bin/config/1518822963
 
 
 RUN chmod +x -R /usr/local/bin && \
     sync && \
-    /usr/local/bin/setup/1518822890 1>/dev/stdout 2>/dev/stderr
+    /usr/local/bin/setup/1518822963 1>/dev/stdout 2>/dev/stderr
 
 EXPOSE 9000 9001
 
