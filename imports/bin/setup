@@ -5,87 +5,105 @@
 set -e
 
 # Install dependencies
+echo "### Install dependencies..."
 if [ ! "$SETUP_DEPENDENCIES_CONFIG$SETUP_DEPENDENCIES_SETUP" = "" ]; then
     apk add --no-cache $SETUP_DEPENDENCIES_CONFIG $SETUP_DEPENDENCIES_SETUP;
 fi
 # Install PHP extension gd
+echo "### Install PHP extension gd..."
 if [ $SETUP_PHP_EXT_GD = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev musl musl-dev;
     docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-png-dir=/usr/include/ --with-jpeg-dir=/usr/include/;
     docker-php-ext-install gd;
 fi
 # Install PHP extension iconv
+echo "### Install PHP extension iconv..."
 if [ $SETUP_PHP_EXT_ICONV = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add musl musl-dev;
     docker-php-ext-install iconv;
 fi
 # Install PHP extension opcache
+echo "### Install PHP extension opcache..."
 if [ $SETUP_PHP_EXT_OPCACHE = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add musl musl-dev;
     docker-php-ext-install opcache;
 fi
 # Install PHP extension readline
+echo "### Install PHP extension readline..."
 if [ $SETUP_PHP_EXT_READLINE = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add musl-dev libedit-dev;
     docker-php-ext-install readline;
 fi
 # Install PHP extension soap
+echo "### Install PHP extension soap..."
 if [ $SETUP_PHP_EXT_SOAP = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add libxml2-dev;
     docker-php-ext-install soap;
 fi
 # Install PHP extension xml
+echo "### Install PHP extension xml..."
 if [ $SETUP_PHP_EXT_XML = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add libxml2-dev;
     docker-php-ext-install xml;
 fi
 # Install PHP extension mysqli
+echo "### Install PHP extension mysqli..."
 if [ $SETUP_PHP_EXT_MYSQLI = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add libxml2-dev;
     docker-php-ext-install mysqli;
 fi
 # Install PHP extension pdo_mysql
+echo "### Install PHP extension pdo_mysql..."
 if [ $SETUP_PHP_EXT_PDO_MYSQL = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add libxml2-dev;
     docker-php-ext-install pdo_mysql;
 fi
 # Install PHP extension curl
+echo "### Install PHP extension curl..."
 if [ $SETUP_PHP_EXT_CURL = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add curl-dev;
     docker-php-ext-install curl;
 fi
 # Install PHP extension json
+echo "### Install PHP extension json..."
 if [ $SETUP_PHP_EXT_JSON = $GENERAL_KEYS_TRUE ]; then
     docker-php-ext-install json;
 fi
 # Install PHP extension mcrypt
+echo "### Install PHP extension mcrypt..."
 if [ $SETUP_PHP_EXT_MCRYPT = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add libmcrypt-dev libltdl;
     docker-php-ext-install mcrypt;
 fi
 # Install PHP extension mbstring
+echo "### Install PHP extension mbstring..."
 if [ $SETUP_PHP_EXT_MBSTRING = $GENERAL_KEYS_TRUE ]; then
     docker-php-ext-install mbstring;
 fi
 # Install PHP extension sodium
+echo "### Install PHP extension sodium..."
 if [ $SETUP_PHP_EXT_SODIUM = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add libsodium-dev;
     docker-php-ext-install sodium;
 fi
 # Install PHP extension zip
+echo "### Install PHP extension zip..."
 if [ $SETUP_PHP_EXT_ZIP = $GENERAL_KEYS_TRUE ]; then
     apk --no-cache add zlib;
     docker-php-ext-install zip;
 fi
 # Install PHP extension redis
+echo "### Install PHP extension redis..."
 if [ $SETUP_PHP_EXT_REDIS = $GENERAL_KEYS_TRUE ]; then
     pecl install redis;
 fi
 # Install PHP extension xdebug
+echo "### Install PHP extension xdebug..."
 if [ $SETUP_PHP_EXT_XDEBUG = $GENERAL_KEYS_TRUE ]; then
     pecl install xdebug;
 fi
 # Clean container
+echo "### Clean container..."
 apk del $SETUP_DEPENDENCIES_BUILD
 
 
