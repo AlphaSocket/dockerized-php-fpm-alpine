@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+# Deploy master branch merging in others branches to build different versions of docker images
+#
+
+set -e 
+
+GIT_AUTHOR="alphasocket <22446807+AlphaSocket@users.noreply.github.com>"
+GIT_BRANCH_MASTER='master'
+GIT_BRANCH_DEVELOP='develop'
+BASEDIR=${PWD##*/}
+REPO_NAME=${BASEDIR}
+CUR_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+GIT_BRANCHES=$(git for-each-ref --format='%(refname:short)' refs/heads/ | xargs)
+GITHUB_USER=$(cmdipass get-one "https://github.com/login" --uuid=735fa2f77d826743b4e2d7c7fc083624 --username-only 2> /dev/null)
+GITHUB_PASS=$(cmdipass get-one "https://github.com/login" --uuid=735fa2f77d826743b4e2d7c7fc083624 --password-only 2> /dev/null)
+GITHUB_AUTH="$GITHUB_USER"
+DIRTY=""
+if [ ! -z "$GITHUB_PASS" ] ; then
+    GITHUB_AUTH="$GITHUB_USER:$GITHUB_PASS"
+fi
+
+#
+# Commit master
+#
+if [ $CUR_BRANCH == $GIT_BRANCH_MASTER ] || [ $CUR_BRANCH == $GIT_BRANCH_DEVELOP ]; then
+    # Rebuild dockerfile and scripts
+    $(which dockerfile-build)
+    DIRTY=$( grep -R "OrderedDict" --exclude=deploy-branches . &>/dev/null && echo -ne "$DIRTY\n- Unparsed values in $CUR_BRANCH" || echo "$DIRTY")
+    git add . 
+    if [ -z "$(git status --porcelain)" ]; then 
+        echo -ne "[$CUR_BRANCH] Nothing to commit \n"
+    else
+        if [ ! -z "$(git status bin/deploy-branches --porcelain 2>/dev/null)" ]
+        then
+            DEPLOY_BRANCHES_CHANGED="True"
+        else
+            DEPLOY_BRANCHES_CHANGED="False"
+        fi
+        
+        git commit --author "$GIT_AUTHOR"
+        # If the deploy-script is modified run the new script and exit
+        if [ "$DEPLOY_BRANCHES_CHANGED" = "True" ]; then
+            bin/deploy-branches
+            exit 0
+        fi
+    fi
+else
+    echo -ne "$0 can be launched only from master and develop\n"
+    exit 1
+fi
+
+MASTER_COMMIT_MESSAGE=$(cat .git/COMMIT_EDITMSG | grep -v '^#' | xargs)
+
+#
+# Deploy in other branches
+#
+for branch in $GIT_BRANCHES
+do
+    if [ $branch == $GIT_BRANCH_MASTER ] || [ $branch == $GIT_BRANCH_DEVELOP ]; then
+        continue
+    fi
+
+    echo -ne "-- Updating branch $branch -- \n"
+    git checkout --force $branch
+    git pull origin $branch || true
+    # Ignoring failed merge 
+    git merge master --no-commit 2>/dev/null || true
+    # Fix retrocompatibility Remove all old files
+    # find . -maxdepth 1  ! -name 'dockerfile-builder.yaml' -type f -exec rm -f {} +
+    rm -f .gitignore
+    rm -f envvars
+    rm -f test
+    rm -f deploy-branches
+    rm -f bin/*
+    mkdir -p ./imports
+    find . -maxdepth 1 -type d ! -name 'bin' ! -name 'imports' ! -name 'volumes' ! -name '.git' ! -name '.' -exec mv -t ./imports/ {} +
+    ### 
+    $(which dockerfile-build)
+    DIRTY=$( grep -R "OrderedDict" --exclude=deploy-branches . &>/dev/null && echo -ne "$DIRTY\n- Unparsed values in $CUR_BRANCH" || echo "$DIRTY")
+    git add .
+    git commit -m "$MASTER_COMMIT_MESSAGE. Rebuilt dockerfile extras and resources" --allow-empty --author "$GIT_AUTHOR"
+    echo -ne "-- Updated branch $branch -- \n\n"
+done
+
+git checkout $GIT_BRANCH_MASTER --force
+
+#
+# Push
+#
+if [ -z "$DIRTY" ];
+then
+    git push https://$GITHUB_AUTH@github.com/$GITHUB_USER/$REPO_NAME --all;
+    git push https://$GITHUB_AUTH@github.com/$GITHUB_USER/$REPO_NAME --tags;
+else
+    echo "$DIRTY";
+    echo "Stopped push";
+    exit 1
+fi
