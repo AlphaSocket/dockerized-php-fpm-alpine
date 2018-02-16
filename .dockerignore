@@ -2,5 +2,5 @@ README.md
 .gitignore
 dockerfile-builder.yaml
 .travis.yml
-test
+bin
 ${GENERAL_DOCKERIGNORE_ADDITIONAL}

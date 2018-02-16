@@ -4,33 +4,12 @@ project:
   description: Dockerized PHP-FPM service on alpine distro
 
 #
-# Init builder
-#
-general:
-  envvars:
-    docker:
-      user: &general_docker_user 03192859189254 
-    keys:
-      True: "True"
-      false: "False"
-      dev: "dev"
-      prd: "prd"
-    
-#
 # Build process
 # Creates dockerfile and file used in it
 #
 build:
   envvars:
     name: *project_codename
-    branch:
-      valueFromCommand: 'git rev-parse --abbrev-ref HEAD'
-    commit:
-      valueFromCommand: 'git rev-parse --short HEAD'
-    version:
-      valueFromCommand: 'echo $BUILD_BRANCH | cut -d \- -f 1'
-    env:
-      valueFromCommand: 'env=$(echo $BUILD_BRANCH | cut -d \- -f 2); [ "$env" = "$BUILD_VERSION" ] && echo $GENERAL_KEYS_PRD || echo $env'
     # PHP
     php:
       version: 
@@ -39,16 +18,14 @@ build:
         port: '9000'
       xdebug:
         port: '9001'
-    # Docker
-    dockerfile:
-      image:
-        valueFromCommand: 'echo "php:${BUILD_PHP_VERSION}-fpm-alpine"'
-      ports:
-        main: 
-          valueFromCommand: 'echo "$BUILD_PHP_FPM_PORT"'
-        additional: 
-          valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "${BUILD_PHP_XDEBUG_PORT}" || echo ""'
-      cmd: /usr/local/bin/docker-php-entrypoint php-fpm
+    from:
+      valueFromParse: php:${BUILD_PHP_VERSION}-fpm-alpine
+    ports:
+      main: 
+        valueFromParse: $BUILD_PHP_FPM_PORT
+      additional: 
+        valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "${BUILD_PHP_XDEBUG_PORT}" || echo ""'
+    cmd: /usr/local/bin/docker-php-entrypoint php-fpm
 
 #
 # Setup process injected in dockerfile
@@ -299,20 +276,13 @@ config:
         - docker-php-ext-enable xdebug
 
 test:
-  envvars:
-    port: 30000
-    dockerfile:
-      tag: 
-        user: *general_docker_user
-        name: $BUILD_NAME
-        version: $BUILD_BRANCH
   processes:
     - title: "Starting container"
       commands:
         - TEST_CONTAINER_ID=$(
             docker run -d 
-              -p 127.0.0.1:${TEST_PORT}:${BUILD_DOCKERFILE_PORTS_MAIN} 
-              ${TEST_DOCKERFILE_TAG_USER}/${TEST_DOCKERFILE_TAG_NAME}:${TEST_DOCKERFILE_TAG_VERSION}
+              -p 127.0.0.1:${TEST_HOST_PORT}:${BUILD_PORTS_MAIN} 
+              ${BUILD_USER}/${BUILD_NAME}:${BUILD_VERSION}
           )
 
     - title: "Testing service every second for 5min as docker-php-ext-enable could request packages from internet slowing down the config"
@@ -320,7 +290,7 @@ test:
         - SCRIPT_NAME=/test.php
         - SCRIPT_FILENAME=/test.php
         - REQUEST_METHOD=GET
-        - CONDITION="cgi-fcgi -bind -connect 127.0.0.1:${TEST_PORT}"
+        - CONDITION="cgi-fcgi -bind -connect 127.0.0.1:${TEST_HOST_PORT}"
         - MAX_TRIES=300
         - SECONDS_BETWEEN_TRIES=1
         - c=0

@@ -11,35 +11,17 @@ addons:
             - curl
             - libfcgi0ldbl
 
+
+
 services:
   - docker
 
 before_install:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTER;
-  - docker build 
-        --no-cache 
-        -t 03192859189254/php-fpm-alpine:latest
-        --build-arg BUILD_COMMIT=`git rev-parse --short HEAD` 
-        --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` .
 
 script:
-# Starting container
- - TEST_CONTAINER_ID=$( docker run -d -p 127.0.0.1:30000:9000 03192859189254/php-fpm-alpine:latest )
-
-# Testing service every second for 5min as docker-php-ext-enable could request packages from internet slowing down the config
- - SCRIPT_NAME=/test.php
- - SCRIPT_FILENAME=/test.php
- - REQUEST_METHOD=GET
- - CONDITION="cgi-fcgi -bind -connect 127.0.0.1:30000"
- - MAX_TRIES=300
- - SECONDS_BETWEEN_TRIES=1
- - c=0
- - while ! eval "$CONDITION"; do if [ $c -ge ${MAX_TRIES} ]; then exit 1; else c=$(($c + 1)); fi; echo "Try $c failed"; sleep ${SECONDS_BETWEEN_TRIES}; done
-
-
+    - bin/cache_warm & bin/build
+    - bin/test
 
 after_success:
-  - if [ "$DOCKER_USERNAME" ]; then
-        docker tag 03192859189254/php-fpm-alpine:latest ${DOCKER_REGISTER}/${DOCKER_USERNAME}/php-fpm-alpine:latest;
-        docker push ${DOCKER_REGISTER}/${DOCKER_USERNAME}/php-fpm-alpine:latest;
-    fi
+  - bin/push
