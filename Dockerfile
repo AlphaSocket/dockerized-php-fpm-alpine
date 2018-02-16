@@ -75,11 +75,17 @@ RUN if [ ! -d "/usr/local/bin/setup" ]; then \
         mkdir -p /usr/local/bin/config; \
     fi
 
+ADD imports/bin/docker-config /usr/local/bin/docker-config
+ADD imports/bin/docker-run /usr/local/bin/docker-run
+ADD imports/bin/docker-rediness-test /usr/local/bin/docker-rediness-test
+ADD imports/bin/docker-liveness-test /usr/local/bin/docker-liveness-test
+ADD imports/bin/setup /usr/local/bin/setup/1518822715
+ADD imports/bin/config /usr/local/bin/config/1518822715
 
 
 RUN chmod +x -R /usr/local/bin && \
     sync && \
-    /usr/local/bin/setup/1518822537 1>/dev/stdout 2>/dev/stderr
+    /usr/local/bin/setup/1518822715 1>/dev/stdout 2>/dev/stderr
 
 EXPOSE 9000 9001
 
