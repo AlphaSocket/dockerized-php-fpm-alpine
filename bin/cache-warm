@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# Warm cache for build and test processes
+#
+
+DOCKER=$(which docker)
+
+if [ DOCKER = '' ]; then
+    echo 'Docker is required\n'
+    exit 1
+fi
+
+echo "#\n# Warming cache\n#\n"
+for image in "php:OrderedDict([('valueFromCommand', '[ "$BUILD_VERSION" = "latest" ] && echo 7.2 || echo $BUILD_VERSION')])-fpm-alpine"
+do 
+    docker pull ${image} 1>/dev/null;
+done
+
+exit 0
