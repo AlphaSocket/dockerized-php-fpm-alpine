@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# Run all configuration scripts
+#
+set -e
+
+touch /tmp/container_status
+if [ ! -f "/tmp/container_status" ];
+then
+    echo "Error: Can't create container_status file /tmp/container_status";
+    exit 1;
+fi
+
+echo "### Starting container configuration"
+echo "running_config" > /tmp/container_status
+
+for config_script in /usr/local/bin/config/*; 
+do
+    $config_script 1>/dev/stdout 2>/dev/stderr; 
+done;
+
+echo "### Finished container configuration"
+echo "ready" > /tmp/container_status
+
+exit 0

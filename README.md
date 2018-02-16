@@ -1,8 +1,12 @@
 # Alphasocket/dockerized-php-fpm-alpine
 #### php-fpm-alpine
-[![](https://travis-ci.org/AlphaSocket/dockerized-php-fpm-alpine.svg?branch=latest-dev )]() [![](https://images.microbadger.com/badges/image/03192859189254/dockerized-php-fpm-alpine:latest-dev.svg)](https://microbadger.com/images/03192859189254/dockerized-php-fpm-alpine:latest-dev ) [![](https://images.microbadger.com/badges/version/03192859189254/dockerized-php-fpm-alpine:latest-dev.svg)](https://microbadger.com/images/03192859189254/dockerized-php-fpm-alpine:latest-dev)
-
 Dockerized PHP-FPM service on alpine distro
+
+
+| [![Build Status](https://semaphoreci.com/api/v1/alphasocket/dockerized-php-fpm-alpine/branches/latest-dev/badge.svg)](https://semaphoreci.com/alphasocket/dockerized-php-fpm-alpine) | Layers | Size  |
+| ----- | ----- | ----- |
+| Dev image | [![](https://images.microbadger.com/badges/image/03192859189254/dockerized-php-fpm-alpine:latest-dev.svg)](https://microbadger.com/images/03192859189254/php-fpm-alpine:latest-dev ) | [![](https://images.microbadger.com/badges/version/03192859189254/dockerized-php-fpm-alpine:latest-dev.svg)](https://microbadger.com/images/03192859189254/php-fpm-alpine:latest-dev) |
+| Prd image | [![](https://images.microbadger.com/badges/image/alphasocket/php-fpm-alpine:latest-dev.svg)](https://microbadger.com/images/alphasocket/php-fpm-alpine:latest-dev ) | [![](https://images.microbadger.com/badges/version/alphasocket/php-fpm-alpine:latest-dev.svg)](https://microbadger.com/images/alphasocket/php-fpm-alpine:latest-dev) |
 
 ## Branches & Versions
 - 5.6
@@ -41,21 +45,22 @@ Dockerized PHP-FPM service on alpine distro
 
 ## Configurable envvars
 ~~~
+CONFIG_REDINESS_TEST="true"
+CONFIG_LIVENESS_TEST="true"
+CONFIG_PATHS_CONTAINER_STATUS="/tmp/container_status"
 CONFIG_PHP_EXT_CURL="True"
 CONFIG_PHP_EXT_GD="True"
 CONFIG_PHP_EXT_ICONV="True"
 CONFIG_PHP_EXT_MYSQLI="True"
 CONFIG_PHP_EXT_MBSTRING="True"
 CONFIG_PHP_EXT_PDO_MYSQL="True"
-CONFIG_PHP_EXT_MCRYPT="False"
+CONFIG_PHP_EXT_MCRYPT="True"
 CONFIG_PHP_EXT_OPCACHE="True"
 CONFIG_PHP_EXT_READLINE="True"
 CONFIG_PHP_EXT_REDIS="True"
 CONFIG_PHP_EXT_SOAP="True"
-CONFIG_PHP_EXT_SODIUM="True"
+CONFIG_PHP_EXT_SODIUM="False"
 CONFIG_PHP_EXT_XML="True"
 CONFIG_PHP_EXT_XDEBUG="True"
 CONFIG_PHP_EXT_ZIP="True"
 ~~~
-
-
