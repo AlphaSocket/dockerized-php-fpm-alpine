@@ -1,0 +1,42 @@
+#!/bin/sh
+#
+# Script that retag and push test docker images to prd user
+#
+
+# exit if a command fails
+set -e
+
+DOCKER=$(which docker)
+
+if [ DOCKER = '' ]; then
+    echo 'Docker is required\n'
+    exit 1
+fi
+
+#
+# LOGIN
+#
+LOGGED_IN=$( docker info | grep -q "Username: alphasocket" && echo "true")
+if [ "$LOGGED_IN" != "true" ];
+then 
+    if [ ! -z "$DOCKER_PASSWORD" ] ;
+    then
+        # Automated push
+        docker login -u "alphasocket" -p "$DOCKER_PASSWORD" docker.io;
+    else
+        docker login -u "alphasocket" docker.io;
+    fi
+fi
+
+#
+# RE-TAG the dev image to prd usr
+#
+docker tag 03192859189254/php-fpm-alpine:7.2 \
+    alphasocket/php-fpm-alpine:7.2;
+
+#
+# PUSH
+#
+echo "#\n# Pushing image\n#\n"
+docker push docker.io/alphasocket/php-fpm-alpine:7.2;
+exit $?
