@@ -19,7 +19,7 @@ build:
       xdebug:
         port: '9001'
     from:
-      valueFromCommand: "echo php:${BUILD_BRANCH}-fpm-alpine | sed 's/latest/7.2/g'"
+      valueFromCommand: "echo php:${BUILD_PHP_VERSION}-fpm-alpine"
     ports:
       main: 
         valueFromParse: $BUILD_PHP_FPM_PORT
