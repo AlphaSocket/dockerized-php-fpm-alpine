@@ -8,7 +8,7 @@ set -e
 
 DOCKER=$(which docker)
 
-if [ DOCKER = '' ]; then
+if [ "$DOCKER" = '' ]; then
     echo 'Docker is required\n'
     exit 1
 fi
