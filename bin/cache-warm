@@ -12,7 +12,7 @@ if [ DOCKER = '' ]; then
 fi
 
 echo "#\n# Warming cache\n#\n"
-for image in "php:5.6-dev-fpm-alpine"
+for image in "php:5.6-fpm-alpine"
 do 
     docker pull ${image} 1>/dev/null;
 done
