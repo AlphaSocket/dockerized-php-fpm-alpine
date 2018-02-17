@@ -19,17 +19,17 @@ ENV \
 	GENERAL_KEYS_PRD="prd" \
 	BUILD_USER="03192859189254" \
 	BUILD_REGISTRY="docker.io" \
-	BUILD_NAME="php-fpm-alpine" \
 	BUILD_REPO="https://github.com/alphaSocket/dockerized-php-fpm-alpine" \
 	BUILD_BRANCH="7.0" \
 	BUILD_VERSION="7.0" \
 	BUILD_ENV="prd" \
-	BUILD_FROM="php:7.0-fpm-alpine" \
-	BUILD_PORTS_MAIN="9000" \
-	BUILD_PORTS_ADDITIONAL="" \
+	BUILD_NAME="php-fpm-alpine" \
 	BUILD_PHP_VERSION="7.0" \
 	BUILD_PHP_FPM_PORT="9000" \
 	BUILD_PHP_XDEBUG_PORT="9001" \
+	BUILD_FROM="php:7.0-fpm-alpine" \
+	BUILD_PORTS_MAIN="9000" \
+	BUILD_PORTS_ADDITIONAL="" \
 	BUILD_CMD="/usr/local/bin/docker-php-entrypoint php-fpm" \
 	SETUP_DEPENDENCIES_SETUP="binutils-libs binutils m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c" \
 	SETUP_DEPENDENCIES_CONFIG="" \
@@ -79,13 +79,13 @@ ADD imports/bin/docker-config /usr/local/bin/docker-config
 ADD imports/bin/docker-run /usr/local/bin/docker-run
 ADD imports/bin/docker-rediness-test /usr/local/bin/docker-rediness-test
 ADD imports/bin/docker-liveness-test /usr/local/bin/docker-liveness-test
-ADD imports/bin/setup /usr/local/bin/setup/1518870761
-ADD imports/bin/config /usr/local/bin/config/1518870761
+ADD imports/bin/setup /usr/local/bin/setup/1518896740
+ADD imports/bin/config /usr/local/bin/config/1518896740
 
 
 RUN chmod +x -R /usr/local/bin && \
     sync && \
-    /usr/local/bin/setup/1518870761 1>/dev/stdout 2>/dev/stderr
+    /usr/local/bin/setup/1518896740 1>/dev/stdout 2>/dev/stderr
 
 EXPOSE 9000 
 
