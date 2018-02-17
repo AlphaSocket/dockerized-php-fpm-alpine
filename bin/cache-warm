@@ -12,7 +12,7 @@ if [ DOCKER = '' ]; then
 fi
 
 echo "#\n# Warming cache\n#\n"
-for image in "php:OrderedDict([('valueFromCommand', '[ "$BUILD_VERSION" = "latest" ] && echo 7.2 || echo $BUILD_VERSION')])-fpm-alpine"
+for image in "php:latest-dev-fpm-alpine"
 do 
     docker pull ${image} 1>/dev/null;
 done
