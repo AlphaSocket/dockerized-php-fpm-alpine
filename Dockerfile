@@ -1,7 +1,7 @@
 #
 # Do not change content here, image automatically built
 #
-FROM php:7.1-dev-fpm-alpine
+FROM php:7.1-fpm-alpine
 
 ARG BUILD_COMMIT
 ARG BUILD_DATE
@@ -24,10 +24,10 @@ ENV \
 	BUILD_VERSION="7.1-dev" \
 	BUILD_ENV="dev" \
 	BUILD_NAME="php-fpm-alpine" \
-	BUILD_PHP_VERSION="7.1-dev" \
+	BUILD_PHP_VERSION="7.1" \
 	BUILD_PHP_FPM_PORT="9000" \
 	BUILD_PHP_XDEBUG_PORT="9001" \
-	BUILD_FROM="php:7.1-dev-fpm-alpine" \
+	BUILD_FROM="php:7.1-fpm-alpine" \
 	BUILD_PORTS_MAIN="9000" \
 	BUILD_PORTS_ADDITIONAL="9001" \
 	BUILD_CMD="/usr/local/bin/docker-php-entrypoint php-fpm" \
@@ -79,13 +79,13 @@ ADD imports/bin/docker-config /usr/local/bin/docker-config
 ADD imports/bin/docker-run /usr/local/bin/docker-run
 ADD imports/bin/docker-rediness-test /usr/local/bin/docker-rediness-test
 ADD imports/bin/docker-liveness-test /usr/local/bin/docker-liveness-test
-ADD imports/bin/setup /usr/local/bin/setup/1518896747
-ADD imports/bin/config /usr/local/bin/config/1518896747
+ADD imports/bin/setup /usr/local/bin/setup/1518897154
+ADD imports/bin/config /usr/local/bin/config/1518897154
 
 
 RUN chmod +x -R /usr/local/bin && \
     sync && \
-    /usr/local/bin/setup/1518896747 1>/dev/stdout 2>/dev/stderr
+    /usr/local/bin/setup/1518897154 1>/dev/stdout 2>/dev/stderr
 
 EXPOSE 9000 9001
 
