@@ -184,8 +184,10 @@ setup:
 
     - title: "Install PHP extension xdebug"
       shell_condition: "$SETUP_PHP_EXT_XDEBUG = $GENERAL_KEYS_TRUE"
-      commands: 
-        - pecl install xdebug
+      commands:
+        - XDEBUG_PACKAGE="xdebug";
+        - if [ "$BUILD_PHP_VERSION" = '5.6' ]; then XDEBUG_PACKAGE="xdebug-2.5.5"; fi
+        - pecl install $XDEBUG_PACKAGE
 
     - title: "Clean container"
       commands: 
