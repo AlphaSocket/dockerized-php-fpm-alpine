@@ -100,7 +100,7 @@ fi
 # Install PHP extension xdebug
 echo "### Install PHP extension xdebug..."
 if [ $SETUP_PHP_EXT_XDEBUG = $GENERAL_KEYS_TRUE ]; then
-    XDEBUG_PACKAGE="xdebug";;
+    XDEBUG_PACKAGE="xdebug";
     if [ "$BUILD_PHP_VERSION" = '5.6' ]; then XDEBUG_PACKAGE="xdebug-2.5.5"; fi;
     pecl install $XDEBUG_PACKAGE;
 fi
