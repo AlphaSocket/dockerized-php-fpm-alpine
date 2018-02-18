@@ -13,7 +13,7 @@ build:
     # PHP
     php:
       version: 
-        valueFromCommand: 'version=$(echo $BUILD_BRANCH | cut -d \- -f 1); [ "version" = "latest" ] && echo 7.2 || echo $version'
+        valueFromCommand: 'version=$(echo $BUILD_BRANCH | cut -d \- -f 1); [ "$version" = "latest" ] && echo 7.2 || echo $version'
       fpm:
         port: '9000'
       xdebug:
