@@ -9,6 +9,13 @@ project:
 #
 build:
   envvars:
+    groups:
+      main:
+        name: 'www-data'
+    users:
+      main: 
+        name: 'www-data'
+        groups: 'www-data'
     name: *project_codename
     # PHP
     php:
