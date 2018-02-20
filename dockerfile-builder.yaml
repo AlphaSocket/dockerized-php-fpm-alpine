@@ -341,7 +341,7 @@ test:
         - c=0
         - while ! eval "$CONDITION"; 
           do 
-            if [ $c -ge ${MAX_TRIES} ]; then exit 1; else c=$(($c + 1)); fi;
+            if [ $c -ge ${MAX_TRIES} ]; then docker logs $TEST_CONTAINER_ID; exit 1; else c=$(($c + 1)); fi;
             echo "Try $c failed"; 
             sleep ${SECONDS_BETWEEN_TRIES}; 
           done
