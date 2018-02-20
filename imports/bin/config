@@ -3,6 +3,11 @@
 # exit if a command fails
 set -e
 
+# Configure php-fpm pool
+echo "### Configure php-fpm pool..."
+rm -f ${CONFIG_PATHS_PHP_FPM_FOLDER}/www.conf
+echo ${BUILD_PATHS_TEMPLATES}/pool.conf > envsubst > ${CONFIG_PATHS_PHP_FPM_FOLDER}/${CONFIG_PHP_POOL_NAME:-www}.conf
+
 # Enable extension gd
 echo "### Enable extension gd..."
 if [ $CONFIG_PHP_EXT_GD = $GENERAL_KEYS_TRUE ]; then
