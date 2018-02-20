@@ -19,23 +19,47 @@ echo "running_config" > /tmp/container_status
 #
 set -x
 
+#
+# HARDENING
+# Remove unused users
+#
+UNUSED_USER="daemon adm lp sync shutdown halt postmaster cyrus mail news uucp operator man cron ftp sshd at squid xfs games postgres vpopmail ntp smmsp guest"
+for UNUSED_USER in $UNUSED_USERS
+do
+    # Remove user if exists 
+    if id -u "$UNUSED_USER"; then
+        deluser --remove-home "$UNUSED_USER";
+    fi;
+done
+
+
 # Add main group
 if [ ! -z "$CONFIG_GROUPS_MAIN_NAME" ] && [ ! -z "$CONFIG_GROUPS_MAIN_ID" ]; then
-    if ! getent group "$CONFIG_GROUPS_MAIN_NAME"; then
-        addgroup -g $CONFIG_GROUPS_MAIN_ID -S "$CONFIG_GROUPS_MAIN_NAME";
+    if getent group "$CONFIG_GROUPS_MAIN_NAME"; then
+        # Remove users from group
+        GROUP_USERS=$( getent group "$CONFIG_GROUPS_MAIN_NAME" | cut -d \: -f 4 | sed 's/,/ /g' )
+        for GROUP_USER in $GROUP_USERS; do deluser "$GROUP_USER"; done
+        # Remove group
+        delgroup "$CONFIG_GROUPS_MAIN_NAME";
     fi
+    addgroup -g $CONFIG_GROUPS_MAIN_ID -S "$CONFIG_GROUPS_MAIN_NAME";
 fi
 
 # Add additional group
 if [ ! -z "$CONFIG_GROUPS_ADDITIONAL_NAME" ] && [ ! -z "$CONFIG_GROUPS_ADDITIONAL_ID" ]; then
-    if ! getent group "$CONFIG_GROUPS_ADDITIONAL_NAME"; then
-        addgroup -g $CONFIG_GROUPS_ADDITIONAL_ID -S "$CONFIG_GROUPS_ADDITIONAL_NAME";
+    if getent group "$CONFIG_GROUPS_ADDITIONAL_NAME"; then
+        # Remove users in group
+        GROUP_USERS=$( getent group "$CONFIG_GROUPS_ADDITIONAL_NAME" | cut -d \: -f 4 | sed 's/,/ /g' )
+        for GROUP_USER in $users; do deluser "$GROUP_USERS"; done
+        # Remove group
+        delgroup "$CONFIG_GROUPS_ADDITIONAL_NAME";
     fi
+    addgroup -g $CONFIG_GROUPS_ADDITIONAL_ID -S "$CONFIG_GROUPS_ADDITIONAL_NAME";
 fi
 
 # Main user
 if  [ ! -z "$CONFIG_USERS_MAIN_NAME" ] && [ ! -z "$CONFIG_USERS_MAIN_ID" ]; then
-    # Remove user if not exists 
+    # Remove user if exists 
     if id -u "$CONFIG_USERS_MAIN_NAME"; then
         deluser "$CONFIG_USERS_MAIN_NAME";
     fi
@@ -45,12 +69,12 @@ fi
 
 # Add additional user
 if [ ! -z "$CONFIG_USERS_ADDITIONAL_NAME" ] && [ ! -z "$CONFIG_USERS_ADDITIONALs_ID" ]; then
-    # Remove user if not exists 
+    # Remove user if exists 
     if id -u "$CONFIG_USERS_ADDITIONAL_NAME"; then
         deluser "$CONFIG_USERS_ADDITIONAL_NAME";
     fi
     # Add user specifing id and groups
-    adduser -u $CONFIG_USERS_ADDITIONAL_ID -S "$CONFIG_USERS_ADDITIONAL_NAME" -G $CONFIG_USERS_ADDITIONAL_NAME;
+    adduser -u $CONFIG_USERS_ADDITIONAL_ID -S "$CONFIG_USERS_ADDITIONAL_NAME" -G $CONFIG_USERS_ADDITIONAL_GROUPS;
 fi
 
 #
