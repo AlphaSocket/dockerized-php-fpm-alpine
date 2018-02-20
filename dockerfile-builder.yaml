@@ -9,6 +9,13 @@ project:
 #
 build:
   envvars:
+    groups:
+      main:
+        name: 'www-data'
+    users:
+      main: 
+        name: 'www-data'
+        groups: 'www-data'
     name: *project_codename
     # PHP
     php:
@@ -26,7 +33,10 @@ build:
       additional: 
         valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "${BUILD_PHP_XDEBUG_PORT}" || echo ""'
     cmd: /usr/local/bin/docker-php-entrypoint php-fpm
-
+    paths:
+      templates: /usr/local/templates
+  imports:
+    - imports/templates:$BUILD_PATHS_TEMPLATES
 #
 # Setup process injected in dockerfile
 #
@@ -35,7 +45,7 @@ setup:
   envvars:
     dependencies:
       setup: "binutils-libs binutils m4 perl autoconf libmagic file libgcc libstdc++ gmp libgomp libatomic mpfr3 gcc libc-dev g++ make re2c"
-      config: ""
+      config: "gettext"
     php: &php_ext
       ext: 
         curl: True
@@ -199,9 +209,38 @@ setup:
 config:
   # Config env 
   envvars:
+    groups:
+      main:
+        name: 'www-data'
+        id: 1082
+    users:
+      main: 
+        name: 'www-data'
+        id: 1082
+        groups: 'www-data'
     php:
       <<: *php_ext
+      paths:
+        config:
+          php_fpm:
+            folder: /usr/local/etc/php-fpm.d
+      pool:
+        name: www
+        user:
+          valueFromParse: $CONFIG_USERS_MAIN_NAME
+        group:
+          valueFromParse: $CONFIG_GROUPS_MAIN_NAME
+        listen:
+          host: 127.0.0.1
+          port: 9000
   processes:
+    - title: "Configure php-fpm pool"
+      commands:
+        # Remove default configuration
+        - rm -f ${CONFIG_PATHS_PHP_FPM_FOLDER}/www.conf
+        # Create pool configuration
+        - echo ${BUILD_PATHS_TEMPLATES}/pool.conf > envsubst > ${CONFIG_PATHS_PHP_FPM_FOLDER}/${CONFIG_PHP_POOL_NAME:-www}.conf
+
     - title: "Enable extension gd"
       shell_condition: "$CONFIG_PHP_EXT_GD = $GENERAL_KEYS_TRUE"
       commands:
