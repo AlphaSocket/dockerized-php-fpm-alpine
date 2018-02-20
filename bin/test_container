@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# Local test script to test docker images
+#
+
+# exit if a command fails
+set -e
+
+DOCKER=$(which docker)
+
+if [ "$DOCKER" = '' ]; then
+    echo 'Docker is required\n'
+    exit 1
+fi
+
+echo "#\n# Cleaning docker\n#\n"
+running_containers=$(docker ps -aq)
+if [ "$running_containers" ] 
+    then
+        docker stop $running_containers -t 0 && docker system prune -f
+fi
+echo "# Cleaned"
+
+echo "#\n# Running container\n#\n"
+docker run -it 03192859189254/php-fpm-alpine:7.2-dev sh
+exit 0
