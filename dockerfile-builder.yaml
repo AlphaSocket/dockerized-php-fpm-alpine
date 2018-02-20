@@ -37,6 +37,7 @@ build:
       templates: /usr/local/templates
   imports:
     - imports/templates:$BUILD_PATHS_TEMPLATES
+
 #
 # Setup process injected in dockerfile
 #
@@ -316,6 +317,9 @@ config:
       commands:
         - docker-php-ext-enable xdebug
 
+#
+# Testing
+#
 test:
   processes:
     - title: "Starting container"
