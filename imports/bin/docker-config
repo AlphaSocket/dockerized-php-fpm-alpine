@@ -32,50 +32,45 @@ do
     fi;
 done
 
-
-# Add main group
-if [ ! -z "$CONFIG_GROUPS_MAIN_NAME" ] && [ ! -z "$CONFIG_GROUPS_MAIN_ID" ]; then
-    if getent group "$CONFIG_GROUPS_MAIN_NAME"; then
-        # Remove users from group
-        GROUP_USERS=$( getent group "$CONFIG_GROUPS_MAIN_NAME" | cut -d \: -f 4 | sed 's/,/ /g' )
-        for GROUP_USER in $GROUP_USERS; do deluser "$GROUP_USER"; done
-        # Remove group
-        delgroup "$CONFIG_GROUPS_MAIN_NAME";
+#
+# Setting up container users and groups
+#
+for KIND in "MAIN" "ADDITIONAL"
+do
+    # GROUPS
+    GROUP_NAME=$( echo "\$CONFIG_GROUPS_${KIND}_NAME" | envsubst )
+    GROUP_ID=$( echo "\$CONFIG_GROUPS_${KIND}_ID" | envsubst )
+    
+    # Clean and add group
+    if [ ! -z "$GROUP_NAME" ] && [ ! -z "$GROUP_ID" ]; then
+        if getent group "$GROUP_NAME"; then
+            # Remove users from group
+            GROUP_USERS=$( getent group "$GROUP_NAME" | cut -d \: -f 4 | sed 's/,/ /g' )
+            for GROUP_USER in $GROUP_USERS; do deluser "$GROUP_USER"; done
+        else
+            # Remove group
+            delgroup "$GROUP_NAME";
+        fi
+        # Add main group
+        addgroup -g "$GROUP_ID" -S "$GROUP_NAME";
     fi
-    addgroup -g $CONFIG_GROUPS_MAIN_ID -S "$CONFIG_GROUPS_MAIN_NAME";
-fi
-
-# Add additional group
-if [ ! -z "$CONFIG_GROUPS_ADDITIONAL_NAME" ] && [ ! -z "$CONFIG_GROUPS_ADDITIONAL_ID" ]; then
-    if getent group "$CONFIG_GROUPS_ADDITIONAL_NAME"; then
-        # Remove users in group
-        GROUP_USERS=$( getent group "$CONFIG_GROUPS_ADDITIONAL_NAME" | cut -d \: -f 4 | sed 's/,/ /g' )
-        for GROUP_USER in $users; do deluser "$GROUP_USERS"; done
-        # Remove group
-        delgroup "$CONFIG_GROUPS_ADDITIONAL_NAME";
+    
+    # USERS
+    USER_NAME=$( echo "\$CONFIG_USERS_${KIND}_NAME" | envsubst )
+    USER_ID=$( echo "\$CONFIG_USERS_${KIND}_ID" | envsubst )
+    USER_GROUPS=$( echo "\$CONFIG_USERS_${KIND}_GROUPS" | envsubst )
+    
+    # Clean and add user
+    if  [ ! -z "$USER_NAME" ] && [ ! -z "$USER_ID" ]; then
+        # Remove user if exists 
+        if id -u "$USER_NAME"; then
+            deluser "$USER_NAME";
+        fi
+        # Add user specifing groups
+        adduser -u "$USER_ID" -S "$USER_NAME" -G "$USER_GROUPS";
     fi
-    addgroup -g $CONFIG_GROUPS_ADDITIONAL_ID -S "$CONFIG_GROUPS_ADDITIONAL_NAME";
-fi
-
-# Main user
-if  [ ! -z "$CONFIG_USERS_MAIN_NAME" ] && [ ! -z "$CONFIG_USERS_MAIN_ID" ]; then
-    # Remove user if exists 
-    if id -u "$CONFIG_USERS_MAIN_NAME"; then
-        deluser "$CONFIG_USERS_MAIN_NAME";
-    fi
-    # Add user specifing groups
-    adduser -u $CONFIG_USERS_MAIN_ID -S "$CONFIG_USERS_MAIN_NAME" -G $CONFIG_USERS_MAIN_GROUPS;
-fi
-
-# Add additional user
-if [ ! -z "$CONFIG_USERS_ADDITIONAL_NAME" ] && [ ! -z "$CONFIG_USERS_ADDITIONALs_ID" ]; then
-    # Remove user if exists 
-    if id -u "$CONFIG_USERS_ADDITIONAL_NAME"; then
-        deluser "$CONFIG_USERS_ADDITIONAL_NAME";
-    fi
-    # Add user specifing id and groups
-    adduser -u $CONFIG_USERS_ADDITIONAL_ID -S "$CONFIG_USERS_ADDITIONAL_NAME" -G $CONFIG_USERS_ADDITIONAL_GROUPS;
-fi
+    
+done
 
 #
 # Configurations
