@@ -8,19 +8,19 @@ apk add --no-cache gettext $SETUP_DEPENDENCIES_SETUP $SETUP_DEPENDENCIES_CONFIG 
 
 # Install ext if enabled
 echo "### Install ext if enabled..."
-for EXT in $SETUP_PHP_EXTS do IS_ENABLED="$( echo "$SETUP_PHP_EXT_${EXT}_ENABLED" | envsubst)"; NEED_CONFIGURE="$( echo "$SETUP_PHP_EXT_${EXT}_CONFIGURE" | envsubst)"; IS_PECL="$( echo "$SETUP_PHP_EXT_${EXT}_PECL" | envsubst)"; if [ "$IS_ENABLED" = "$GENERAL_KEYS_TRUE" ]; then if [ "$IS_PECL" = "$GENERAL_KEYS_TRUE" ]; then PHP_EXT_PACL_TO_INSTALL="$PHP_EXT_TO_INSTALL $EXT"; else PHP_EXT_DEP_TO_INSTALL="$PHP_EXT_DEP_TO_INSTALL $EXT"; if [ "$NEED_CONFIGURE" = "$GENERAL_KEYS_TRUE" ]; then PHP_EXT_TO_CONFIGURE="$PHP_EXT_TO_CONFIGURE $EXT"; fi PHP_EXT_TO_INSTALL="$PHP_EXT_TO_INSTALL $EXT"; fi fi done
+for EXT in $SETUP_PHP_EXTS; do IS_ENABLED="$( echo "$SETUP_PHP_EXT_${EXT}_ENABLED" | envsubst)"; NEED_CONFIGURE="$( echo "$SETUP_PHP_EXT_${EXT}_CONFIGURE" | envsubst)"; IS_PECL="$( echo "$SETUP_PHP_EXT_${EXT}_PECL" | envsubst)"; if [ "$IS_ENABLED" = "$GENERAL_KEYS_TRUE" ]; then if [ "$IS_PECL" = "$GENERAL_KEYS_TRUE" ]; then PHP_EXT_PECL_TO_INSTALL="$PHP_EXT_TO_INSTALL $EXT"; else PHP_EXT_DEP_TO_INSTALL="$PHP_EXT_DEP_TO_INSTALL $EXT"; if [ "$NEED_CONFIGURE" = "$GENERAL_KEYS_TRUE" ]; then PHP_EXT_TO_CONFIGURE="$PHP_EXT_TO_CONFIGURE $EXT"; fi; PHP_EXT_TO_INSTALL="$PHP_EXT_TO_INSTALL $EXT"; fi fi done
 
 # Install dep
 echo "### Install dep..."
 if [  ! -z "$PHP_EXT_DEP_TO_INSTALL"  ]; then
     APK_DEPS="";
-    for EXT in $PHP_EXT_DEP_TO_INSTALL do APK_DEPS="$APK_DEPS $( echo "$SETUP_PHP_EXT_${EXT}_DEPENDENCIES" | envsubst)"; done;
+    for EXT in $PHP_EXT_DEP_TO_INSTALL; do APK_DEPS="$APK_DEPS $( echo "$SETUP_PHP_EXT_${EXT}_DEPENDENCIES" | envsubst)"; done;
     apk --no-cache add $APK_DEPS;
 fi
 # Configure php ext
 echo "### Configure php ext..."
 if [  ! -z "$PHP_EXT_TO_CONFIGURE"  ]; then
-    for EXT in $PHP_EXT_TO_CONFIGURE do CONFIG_ARGS="$( echo "$SETUP_PHP_EXT_${EXT}_CONFIG_ARGS" | envsubst )"; docker-php-ext-configure $EXT $CONFIG_ARGS; done;
+    for EXT in $PHP_EXT_TO_CONFIGURE; do CONFIG_ARGS="$( echo "$SETUP_PHP_EXT_${EXT}_CONFIG_ARGS" | envsubst )"; docker-php-ext-configure $EXT $CONFIG_ARGS; done;
 fi
 # Install php ext enabled 
 echo "### Install php ext enabled ..."
@@ -30,7 +30,7 @@ fi
 # Install php pecl extentions enabled 
 echo "### Install php pecl extentions enabled ..."
 if [  ! -z "$PHP_EXT_PECL_TO_INSTALL"  ]; then
-    for EXT in $PHP_EXT_PECL_TO_INSTALL do VERSION="$( echo "$SETUP_PHP_EXT_${EXT}_VERSION" | envsubst )"; PACKAGE="${EXT}${VERSION}"; pecl install $PACKAGE; done;
+    for EXT in $PHP_EXT_PECL_TO_INSTALL; do VERSION="$( echo "$SETUP_PHP_EXT_${EXT}_VERSION" | envsubst )"; pecl install "${EXT}${VERSION}"; done;
 fi
 
 
