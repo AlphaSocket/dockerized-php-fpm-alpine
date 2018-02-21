@@ -17,7 +17,6 @@ echo "running_config" > /tmp/container_status
 #
 # Groups
 #
-set -x
 
 #
 # HARDENING
