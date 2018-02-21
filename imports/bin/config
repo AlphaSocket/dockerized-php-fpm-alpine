@@ -6,82 +6,18 @@ set -e
 # Configure php-fpm pool
 echo "### Configure php-fpm pool..."
 rm -f ${CONFIG_PATHS_PHP_FPM_FOLDER}/www.conf
-echo ${BUILD_PATHS_TEMPLATES}/pool.conf > envsubst > ${CONFIG_PATHS_PHP_FPM_FOLDER}/${CONFIG_PHP_POOL_NAME:-www}.conf
+POOL_CONF_TEMPLATE="${BUILD_PATHS_TEMPLATES}/pool.conf"
+POOL_CONF_TARGET="${CONFIG_PATHS_PHP_FPM_FOLDER}/${CONFIG_PHP_POOL_NAME:-www}.conf"
+echo "$POOL_CONF_TEMPLATE" > envsubst > "$POOL_CONF_TARGET"
 
-# Enable extension gd
-echo "### Enable extension gd..."
-if [ $CONFIG_PHP_EXT_GD = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable gd;
-fi
-# Enable extension iconv
-echo "### Enable extension iconv..."
-if [ $CONFIG_PHP_EXT_ICONV = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable iconv;
-fi
-# Enable extension opcache
-echo "### Enable extension opcache..."
-if [ $CONFIG_PHP_EXT_OPCACHE = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable opcache;
-fi
-# Enable extension readline
-echo "### Enable extension readline..."
-if [ $CONFIG_PHP_EXT_READLINE = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable readline;
-fi
-# Enable extension soap
-echo "### Enable extension soap..."
-if [ $CONFIG_PHP_EXT_SOAP = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable soap;
-fi
-# Enable extension mysqli
-echo "### Enable extension mysqli..."
-if [ $CONFIG_PHP_EXT_MYSQLI = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable mysqli;
-fi
-# Enable extension pdo_mysql
-echo "### Enable extension pdo_mysql..."
-if [ $CONFIG_PHP_EXT_PDO_MYSQL = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable pdo_mysql;
-fi
-# Enable extension curl
-echo "### Enable extension curl..."
-if [ $CONFIG_PHP_EXT_CURL = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable curl;
-fi
-# Enable extension json
-echo "### Enable extension json..."
-if [ $CONFIG_PHP_EXT_JSON = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable json;
-fi
-# Enable extension mcrypt
-echo "### Enable extension mcrypt..."
-if [ $CONFIG_PHP_EXT_MCRYPT = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable mcrypt;
-fi
-# Enable extension mbstring
-echo "### Enable extension mbstring..."
-if [ $CONFIG_PHP_EXT_MBSTRING = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable mbstring;
-fi
-# Enable extension sodium
-echo "### Enable extension sodium..."
-if [ $CONFIG_PHP_EXT_SODIUM = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable sodium;
-fi
-# Enable extension zip
-echo "### Enable extension zip..."
-if [ $CONFIG_PHP_EXT_ZIP = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable zip;
-fi
-# Enable extension redis
-echo "### Enable extension redis..."
-if [ $CONFIG_PHP_EXT_REDIS = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable redis;
-fi
-# Enable extension xdebug
-echo "### Enable extension xdebug..."
-if [ $CONFIG_PHP_EXT_XDEBUG = $GENERAL_KEYS_TRUE ]; then
-    docker-php-ext-enable xdebug;
+# Enable extensions
+echo "### Enable extensions..."
+for EXT in $CONFIG_PHP_EXTS do IS_ENABLED="$( echo "$CONFIG_PHP_EXT_${EXT}_ENABLED" | envsubst)"; if [ "$IS_ENABLED" = "$GENERAL_KEYS_TRUE" ]; then ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS $EXT"; fi done
+
+# Enable extensions
+echo "### Enable extensions..."
+if [  ! -z "$ENABLED_EXTENSIONS"  ]; then
+    docker-php-ext-enable $ENABLED_EXTENSIONS;
 fi
 
 
