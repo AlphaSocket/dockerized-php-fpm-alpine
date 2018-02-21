@@ -12,7 +12,7 @@ echo "$POOL_CONF_TEMPLATE" > envsubst > "$POOL_CONF_TARGET"
 
 # Enable extensions
 echo "### Enable extensions..."
-for EXT in $CONFIG_PHP_EXTS do IS_ENABLED="$( echo "$CONFIG_PHP_EXT_${EXT}_ENABLED" | envsubst)"; if [ "$IS_ENABLED" = "$GENERAL_KEYS_TRUE" ]; then ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS $EXT"; fi done
+for EXT in $CONFIG_PHP_EXTS; do IS_ENABLED="$( echo "$CONFIG_PHP_EXT_${EXT}_ENABLED" | envsubst)"; if [ "$IS_ENABLED" = "$GENERAL_KEYS_TRUE" ]; then ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS $EXT"; fi done
 
 # Enable extensions
 echo "### Enable extensions..."
