@@ -28,19 +28,18 @@ Dockerized PHP-FPM service on alpine distro
   + m4
   + perl
   + autoconf
-  + libmagic
   + file
   + libgcc
-  + libstdc++
   + gmp
-  + libgomp
-  + libatomic
   + mpfr3
   + gcc
-  + libc-dev
   + g++
   + make
   + re2c
+  + libatomic
+  + libstdc++
+  + libmagic
+  + libc-dev
 - Config dependencies:
   + gettext
 
@@ -60,21 +59,26 @@ CONFIG_USERS_ADDITIONAL_GROUPS=""
 CONFIG_USERS_MAIN_NAME="www-data"
 CONFIG_USERS_MAIN_ID="1082"
 CONFIG_USERS_MAIN_GROUPS="www-data"
-CONFIG_PHP_EXT_CURL="True"
-CONFIG_PHP_EXT_GD="True"
-CONFIG_PHP_EXT_ICONV="True"
-CONFIG_PHP_EXT_MYSQLI="True"
-CONFIG_PHP_EXT_MBSTRING="True"
-CONFIG_PHP_EXT_PDO_MYSQL="True"
-CONFIG_PHP_EXT_MCRYPT="True"
-CONFIG_PHP_EXT_OPCACHE="True"
-CONFIG_PHP_EXT_READLINE="True"
-CONFIG_PHP_EXT_REDIS="True"
-CONFIG_PHP_EXT_SOAP="True"
-CONFIG_PHP_EXT_SODIUM="False"
-CONFIG_PHP_EXT_XML="True"
-CONFIG_PHP_EXT_XDEBUG="False"
-CONFIG_PHP_EXT_ZIP="True"
+CONFIG_PHP_EXT_CURL_ENABLED="True"
+CONFIG_PHP_EXT_GD_ENABLED="True"
+CONFIG_PHP_EXT_GD_DEPENDENCIES="freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev musl musl-dev"
+CONFIG_PHP_EXT_GD_CONFIGURE_ARG=" --with-gd --with-freetype-dir=/usr/include/ --with-png-dir=/usr/include/ --with-jpeg-dir=/usr/include/"
+CONFIG_PHP_EXT_ICONV_ENABLED="True"
+CONFIG_PHP_EXT_ICONV_DEPENDENCIES="musl musl-dev"
+CONFIG_PHP_EXT_MYSQLI_ENABLED="True"
+CONFIG_PHP_EXT_MBSTRING_ENABLED="True"
+CONFIG_PHP_EXT_PDO_MYSQL_ENABLED="True"
+CONFIG_PHP_EXT_MCRYPT_ENABLED="True"
+CONFIG_PHP_EXT_OPCACHE_ENABLED="True"
+CONFIG_PHP_EXT_OPCACHE_DEPENDENCIES="musl musl-dev"
+CONFIG_PHP_EXT_READLINE_ENABLED="True"
+CONFIG_PHP_EXT_REDIS_ENABLED="True"
+CONFIG_PHP_EXT_SOAP_ENABLED="True"
+CONFIG_PHP_EXT_SODIUM_ENABLED="False"
+CONFIG_PHP_EXT_XML_ENABLED="True"
+CONFIG_PHP_EXT_XDEBUG_ENABLED="False"
+CONFIG_PHP_EXT_ZIP_ENABLED="True"
+CONFIG_PHP_EXT_ZIP_DEPENDENCIES="zlib"
 CONFIG_PHP_PATHS_CONFIG_PHP_FPM_FOLDER="/usr/local/etc/php-fpm.d"
 CONFIG_PHP_POOL_NAME="www"
 CONFIG_PHP_POOL_USER="www-data"
