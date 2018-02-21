@@ -50,7 +50,7 @@ setup:
       setup: "binutils-libs binutils m4 perl autoconf file libgcc gmp mpfr3 gcc g++ make re2c libatomic libstdc++ libmagic libc-dev"
       config: "gettext"
       runtime: ""
-    php: &php_ext
+    php: &php
       ext: 
         curl:
           enabled: True
@@ -114,7 +114,7 @@ setup:
 
     - title: "Install ext if enabled"
       commands:
-        - for EXT in $CONFIG_PHP_EXTS
+        - for EXT in $SETUP_PHP_EXTS
           do
             IS_ENABLED="$( echo "$SETUP_PHP_EXT_${EXT}_ENABLED" | envsubst)";
             NEED_CONFIGURE="$( echo "$SETUP_PHP_EXT_${EXT}_CONFIGURE" | envsubst)";
@@ -157,7 +157,7 @@ setup:
       commands:
         - docker-php-ext-install $PHP_EXT_TO_INSTALL
         
-    - title: "Install php ext enabled "
+    - title: "Install php pecl extentions enabled "
       shell_condition: ' ! -z "$PHP_EXT_PECL_TO_INSTALL" '
       commands:
         - for EXT in $PHP_EXT_PECL_TO_INSTALL
@@ -183,7 +183,7 @@ config:
         id: 1082
         groups: 'www-data'
     php:
-      <<: *php_ext
+      <<: *php
       paths:
         config:
           php_fpm:
@@ -207,83 +207,18 @@ config:
         - POOL_CONF_TARGET="${CONFIG_PATHS_PHP_FPM_FOLDER}/${CONFIG_PHP_POOL_NAME:-www}.conf"
         - echo "$POOL_CONF_TEMPLATE" > envsubst > "$POOL_CONF_TARGET"
     
-    - title: "Enable extension gd"
-      shell_condition: "$CONFIG_PHP_EXT_GD = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS gd"
-
-    - title: "Enable extension iconv"
-      shell_condition: "$CONFIG_PHP_EXT_ICONV = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS iconv"
-
-    - title: "Enable extension opcache"
-      shell_condition: "$CONFIG_PHP_EXT_OPCACHE = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS opcache"
-
-    - title: "Enable extension readline"
-      shell_condition: "$CONFIG_PHP_EXT_READLINE = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS readline"
-
-    - title: "Enable extension soap"
-      shell_condition: "$CONFIG_PHP_EXT_SOAP = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS soap"
-
-    - title: "Enable extension mysqli"
-      shell_condition: "$CONFIG_PHP_EXT_MYSQLI = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS mysqli"
-
-    - title: "Enable extension pdo_mysql"
-      shell_condition: "$CONFIG_PHP_EXT_PDO_MYSQL = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS pdo_mysql"
-
-    - title: "Enable extension curl"
-      shell_condition: "$CONFIG_PHP_EXT_CURL = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS curl"
-
-    - title: "Enable extension json"
-      shell_condition: "$CONFIG_PHP_EXT_JSON = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS json"
-
-    - title: "Enable extension mcrypt"
-      shell_condition: "$CONFIG_PHP_EXT_MCRYPT = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS mcrypt"
-
-    - title: "Enable extension mbstring"
-      shell_condition: "$CONFIG_PHP_EXT_MBSTRING = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS mbstring"
-
-    - title: "Enable extension sodium"
-      shell_condition: "$CONFIG_PHP_EXT_SODIUM = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS sodium"
-
-    - title: "Enable extension zip"
-      shell_condition: "$CONFIG_PHP_EXT_ZIP = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS zip"
-
-    - title: "Enable extension redis"
-      shell_condition: "$CONFIG_PHP_EXT_REDIS = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS redis"
-
-    - title: "Enable extension xdebug"
-      shell_condition: "$CONFIG_PHP_EXT_XDEBUG = $GENERAL_KEYS_TRUE"
-      commands:
-        - ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS xdebug"
-        
     - title: "Enable extensions"
-      shell_condition: "$CONFIG_PHP_EXT_XDEBUG = $GENERAL_KEYS_TRUE"
+      commands:
+        - for EXT in $CONFIG_PHP_EXTS
+          do
+            IS_ENABLED="$( echo "$CONFIG_PHP_EXT_${EXT}_ENABLED" | envsubst)";
+            if [ "$IS_ENABLED" = "$GENERAL_KEYS_TRUE" ]; then
+              ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS $EXT";
+            fi
+          done
+          
+    - title: "Enable extensions"
+      shell_condition: ' ! -z "$ENABLED_EXTENSIONS" '
       commands:
         - docker-php-ext-enable $ENABLED_EXTENSIONS
 
