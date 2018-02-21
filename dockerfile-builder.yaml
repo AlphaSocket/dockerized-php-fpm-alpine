@@ -93,7 +93,7 @@ setup:
             valueFromCommand: '[ "$BUILD_ENV" = "$GENERAL_KEYS_DEV" ] && echo "$GENERAL_KEYS_TRUE" || echo "$GENERAL_KEYS_FALSE"'
           pecl: True
           version:
-            valueFromCOmmand: '[ "$BUILD_PHP_VERSION" = '5.6' ] && echo "-2.5.5" || echo "" '
+            valueFromCommand: '[ "$BUILD_PHP_VERSION" = "5.6" ] && echo "-2.5.5" || echo ""'
         soap:
           enabled: True
           dependencies: libxml2-dev
