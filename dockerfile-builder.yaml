@@ -208,7 +208,7 @@ config:
     
     - title: "Enable extensions"
       commands:
-        - for EXT in $CONFIG_PHP_EXTS
+        - for EXT in $CONFIG_PHP_EXTS;
           do
             IS_ENABLED="$( echo "$CONFIG_PHP_EXT_${EXT}_ENABLED" | envsubst)";
             if [ "$IS_ENABLED" = "$GENERAL_KEYS_TRUE" ]; then
