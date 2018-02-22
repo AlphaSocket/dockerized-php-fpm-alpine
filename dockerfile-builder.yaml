@@ -67,6 +67,10 @@ setup:
         iconv:
           enabled: True
           dependencies: musl musl-dev
+        intl:
+          enabled: True
+          configure: True
+          dependencies: musl musl-dev icu-libs libstdc++
         mysqli:
           enabled: True
           dependencies: libxml2-dev
@@ -107,7 +111,7 @@ setup:
         zip:
           enabled: True
           dependencies: zlib
-      exts: curl gd iconv mysqli mbstring pdo_mysql mcrypt opcache readline redis xdebug soap sodium xml zip
+      exts: curl gd iconv intl mysqli mbstring pdo_mysql mcrypt opcache readline redis xdebug soap sodium xml zip
       
   # Setup Processes
   processes:
