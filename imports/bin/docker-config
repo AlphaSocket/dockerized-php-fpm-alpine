@@ -46,7 +46,8 @@ do
             # Remove users from group
             GROUP_USERS=$( getent group "$GROUP_NAME" | cut -d \: -f 4 | sed 's/,/ /g' )
             for GROUP_USER in $GROUP_USERS; do deluser "$GROUP_USER"; done
-        else
+        fi
+        if grep "$GROUP_NAME" /etc/groups &> /dev/null; then
             # Remove group
             delgroup "$GROUP_NAME";
         fi
