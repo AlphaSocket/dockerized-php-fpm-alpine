@@ -5,6 +5,7 @@
 
 set -e 
 
+COMMIT_MESSAGE="$1"
 GIT_AUTHOR="alphasocket <22446807+AlphaSocket@users.noreply.github.com>"
 GIT_BRANCH_MASTER='master'
 GIT_BRANCH_DEVELOP='develop'
@@ -38,7 +39,10 @@ if [ $CUR_BRANCH == $GIT_BRANCH_MASTER ] || [ $CUR_BRANCH == $GIT_BRANCH_DEVELOP
             DEPLOY_BRANCHES_CHANGED="False"
         fi
         
-        git commit --author "$GIT_AUTHOR"
+        if [ ! -z "$COMMIT_MESSAGE" ]; then
+            GIT_MESSAGE="-m $COMMIT_MESSAGE";
+        fi
+        git commit --author "$GIT_AUTHOR" $GIT_MESSAGE
         # If the deploy-script is modified run the new script and exit
         if [ "$DEPLOY_BRANCHES_CHANGED" = "True" ]; then
             bin/deploy-branches
