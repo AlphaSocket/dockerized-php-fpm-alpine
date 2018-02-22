@@ -22,11 +22,11 @@ echo "running_config" > /tmp/container_status
 # HARDENING
 # Remove unused users
 #
-UNUSED_USER="daemon adm lp sync shutdown halt postmaster cyrus mail news uucp operator man cron ftp sshd at squid xfs games postgres vpopmail ntp smmsp guest"
+UNUSED_USERS="daemon adm lp sync shutdown halt postmaster cyrus mail news uucp operator man cron ftp sshd at squid xfs games postgres vpopmail ntp smmsp guest"
 for UNUSED_USER in $UNUSED_USERS
 do
     # Remove user if exists 
-    if id -u "$UNUSED_USER"; then
+    if id -u "$UNUSED_USER" &> /dev/null; then
         deluser --remove-home "$UNUSED_USER";
     fi;
 done
@@ -42,7 +42,7 @@ do
     
     # Clean and add group
     if [ ! -z "$GROUP_NAME" ] && [ ! -z "$GROUP_ID" ]; then
-        if getent group "$GROUP_NAME"; then
+        if getent group "$GROUP_NAME" &> /dev/null; then
             # Remove users from group
             GROUP_USERS=$( getent group "$GROUP_NAME" | cut -d \: -f 4 | sed 's/,/ /g' )
             for GROUP_USER in $GROUP_USERS; do deluser "$GROUP_USER"; done
@@ -63,7 +63,7 @@ do
     # Clean and add user
     if  [ ! -z "$USER_NAME" ] && [ ! -z "$USER_ID" ]; then
         # Remove user if exists 
-        if id -u "$USER_NAME"; then
+        if id -u "$USER_NAME" &> /dev/null ; then
             deluser "$USER_NAME";
         fi
         # Add user specifing groups
