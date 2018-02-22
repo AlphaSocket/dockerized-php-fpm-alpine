@@ -15,23 +15,6 @@ echo "### Starting container configuration"
 echo "running_config" > /tmp/container_status
 
 #
-# Groups
-#
-
-#
-# HARDENING
-# Remove unused users
-#
-UNUSED_USERS="daemon adm lp sync shutdown halt postmaster cyrus mail news uucp operator man cron ftp sshd at squid xfs games postgres vpopmail ntp smmsp guest"
-for UNUSED_USER in $UNUSED_USERS
-do
-    # Remove user if exists 
-    if [ ! -z "$(id -u "$UNUSED_USER" 2> /dev/null)" ]; then
-        deluser "$UNUSED_USER";
-    fi;
-done
-
-#
 # Setting up container users and groups
 #
 for KIND in "MAIN" "ADDITIONAL"
@@ -73,12 +56,25 @@ do
 done
 
 #
-# Configurations
+# Run custom configurations
 #
 for config_script in /usr/local/bin/config/*; 
 do
     $config_script 1>/dev/stdout 2>/dev/stderr; 
 done;
+
+#
+# HARDENING
+# Remove unused users
+#
+UNUSED_USERS="daemon adm lp sync shutdown halt postmaster cyrus mail news uucp operator man cron ftp sshd at squid xfs games postgres vpopmail ntp smmsp guest"
+for UNUSED_USER in $UNUSED_USERS;
+do
+    # Remove user if exists 
+    if [ ! -z "$(id -u "$UNUSED_USER" 2> /dev/null)" ]; then
+        deluser "$UNUSED_USER";
+    fi;
+done
 
 # End configuration
 echo "ready" > /tmp/container_status
