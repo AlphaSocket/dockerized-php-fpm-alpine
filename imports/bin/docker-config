@@ -26,8 +26,8 @@ UNUSED_USERS="daemon adm lp sync shutdown halt postmaster cyrus mail news uucp o
 for UNUSED_USER in $UNUSED_USERS
 do
     # Remove user if exists 
-    if id -u "$UNUSED_USER" &> /dev/null; then
-        deluser --remove-home "$UNUSED_USER";
+    if [ ! -z "$(id -u "$UNUSED_USER" 2> /dev/null)" ]; then
+        deluser "$UNUSED_USER";
     fi;
 done
 

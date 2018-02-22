@@ -31,14 +31,14 @@ echo "# Cleaned"
 echo "#\n# Running test\n#\n"
 # Starting container
 echo "### Starting container..."
-TEST_CONTAINER_ID=$( docker run -d -p 127.0.0.1:30888:9000 03192859189254/php-fpm-alpine:7.0-dev )
+TEST_CONTAINER_ID=$( docker run -d -p 127.0.0.1:30052:9000 03192859189254/php-fpm-alpine:7.0-dev )
 
 # Testing service every second for 5min as docker-php-ext-enable could request packages from internet slowing down the config
 echo "### Testing service every second for 5min as docker-php-ext-enable could request packages from internet slowing down the config..."
 SCRIPT_NAME=/test.php
 SCRIPT_FILENAME=/test.php
 REQUEST_METHOD=GET
-CONDITION="cgi-fcgi -bind -connect 127.0.0.1:30888"
+CONDITION="cgi-fcgi -bind -connect 127.0.0.1:30052"
 MAX_TRIES=300
 SECONDS_BETWEEN_TRIES=1
 c=0
