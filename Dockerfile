@@ -51,6 +51,9 @@ ENV \
 	SETUP_PHP_EXT_GD_CONFIGURE_ARG=" --with-gd --with-freetype-dir=/usr/include/ --with-png-dir=/usr/include/ --with-jpeg-dir=/usr/include/" \
 	SETUP_PHP_EXT_ICONV_ENABLED="True" \
 	SETUP_PHP_EXT_ICONV_DEPENDENCIES="musl musl-dev" \
+	SETUP_PHP_EXT_INTL_ENABLED="True" \
+	SETUP_PHP_EXT_INTL_CONFIGURE="True" \
+	SETUP_PHP_EXT_INTL_DEPENDENCIES="musl musl-dev icu-libs libstdc++" \
 	SETUP_PHP_EXT_MYSQLI_ENABLED="True" \
 	SETUP_PHP_EXT_MYSQLI_DEPENDENCIES="libxml2-dev" \
 	SETUP_PHP_EXT_MBSTRING_ENABLED="True" \
@@ -75,7 +78,7 @@ ENV \
 	SETUP_PHP_EXT_XML_DEPENDENCIES="libxml2-dev" \
 	SETUP_PHP_EXT_ZIP_ENABLED="True" \
 	SETUP_PHP_EXT_ZIP_DEPENDENCIES="zlib" \
-	SETUP_PHP_EXTS="curl gd iconv mysqli mbstring pdo_mysql mcrypt opcache readline redis xdebug soap sodium xml zip" \
+	SETUP_PHP_EXTS="curl gd iconv intl mysqli mbstring pdo_mysql mcrypt opcache readline redis xdebug soap sodium xml zip" \
 	CONFIG_REDINESS_TEST="true" \
 	CONFIG_LIVENESS_TEST="true" \
 	CONFIG_PATHS_CONTAINER_STATUS="/tmp/container_status" \
@@ -97,6 +100,9 @@ ENV \
 	CONFIG_PHP_EXT_GD_CONFIGURE_ARG=" --with-gd --with-freetype-dir=/usr/include/ --with-png-dir=/usr/include/ --with-jpeg-dir=/usr/include/" \
 	CONFIG_PHP_EXT_ICONV_ENABLED="True" \
 	CONFIG_PHP_EXT_ICONV_DEPENDENCIES="musl musl-dev" \
+	CONFIG_PHP_EXT_INTL_ENABLED="True" \
+	CONFIG_PHP_EXT_INTL_CONFIGURE="True" \
+	CONFIG_PHP_EXT_INTL_DEPENDENCIES="musl musl-dev icu-libs libstdc++" \
 	CONFIG_PHP_EXT_MYSQLI_ENABLED="True" \
 	CONFIG_PHP_EXT_MYSQLI_DEPENDENCIES="libxml2-dev" \
 	CONFIG_PHP_EXT_MBSTRING_ENABLED="True" \
@@ -121,7 +127,7 @@ ENV \
 	CONFIG_PHP_EXT_XML_DEPENDENCIES="libxml2-dev" \
 	CONFIG_PHP_EXT_ZIP_ENABLED="True" \
 	CONFIG_PHP_EXT_ZIP_DEPENDENCIES="zlib" \
-	CONFIG_PHP_EXTS="curl gd iconv mysqli mbstring pdo_mysql mcrypt opcache readline redis xdebug soap sodium xml zip" \
+	CONFIG_PHP_EXTS="curl gd iconv intl mysqli mbstring pdo_mysql mcrypt opcache readline redis xdebug soap sodium xml zip" \
 	CONFIG_PHP_PATHS_CONFIG_PHP_FPM_FOLDER="/usr/local/etc/php-fpm.d" \
 	CONFIG_PHP_POOL_NAME="www" \
 	CONFIG_PHP_POOL_USER="www-data" \
@@ -132,14 +138,14 @@ ADD imports/bin/docker-config /usr/local/bin/docker-config
 ADD imports/bin/docker-run /usr/local/bin/docker-run
 ADD imports/bin/docker-rediness-test /usr/local/bin/docker-rediness-test
 ADD imports/bin/docker-liveness-test /usr/local/bin/docker-liveness-test
-ADD imports/bin/setup /usr/local/bin/setup/1519256352
-ADD imports/bin/config /usr/local/bin/config/1519256352
+ADD imports/bin/setup /usr/local/bin/setup/1519336292
+ADD imports/bin/config /usr/local/bin/config/1519336292
 ADD imports/templates/pool.conf /usr/local/templates/pool.conf
 
 
 RUN chmod +x -R /usr/local/bin && \
     sync && \
-    /usr/local/bin/setup/1519256352 1>/dev/stdout 2>/dev/stderr
+    /usr/local/bin/setup/1519336292 1>/dev/stdout 2>/dev/stderr
 
 EXPOSE 9000 9001
 
