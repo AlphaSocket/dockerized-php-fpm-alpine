@@ -12,6 +12,7 @@ echo "$POOL_CONF_TEMPLATE" > envsubst > "$POOL_CONF_TARGET"
 
 # Enable extensions
 echo "### Enable extensions..."
+CONFIG_PHP_EXTS="$( printenv | grep -e 'CONFIG_PHP_EXT_[A-Z_]*_ENABLED=.*' | sed -E 's/CONFIG_PHP_EXT_([A-Z_]+?)_ENABLED=.*?/\1/g' | awk '{print tolower($0)}' | xargs )";
 for EXT in $CONFIG_PHP_EXTS; do IS_ENABLED="$( echo "$CONFIG_PHP_EXT_${EXT}_ENABLED" | envsubst)"; if [ "$IS_ENABLED" = "$GENERAL_KEYS_TRUE" ]; then ENABLED_EXTENSIONS="$ENABLED_EXTENSIONS $EXT"; fi done
 
 # Enable extensions
@@ -19,6 +20,11 @@ echo "### Enable extensions..."
 if [  ! -z "$ENABLED_EXTENSIONS"  ]; then
     docker-php-ext-enable $ENABLED_EXTENSIONS;
 fi
+# Print result
+echo "### Print result..."
+echo "PHP-FPM Modules installed"
+php-fpm -m
+
 
 
 exit 0
