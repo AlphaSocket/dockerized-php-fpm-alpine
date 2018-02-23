@@ -1,4 +1,5 @@
 README.md
+.git
 .gitignore
 dockerfile-builder.yaml
 .travis.yml
