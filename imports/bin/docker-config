@@ -50,7 +50,7 @@ do
             deluser "$USER_NAME";
         fi
         # Add user specifing groups
-        adduser -u "$USER_ID" -S "$USER_NAME" -G "$USER_GROUPS";
+        adduser -u "$USER_ID" -S "$USER_NAME" -G $USER_GROUPS;
     fi
     
 done
