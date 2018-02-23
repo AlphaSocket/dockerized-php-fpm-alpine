@@ -6,32 +6,46 @@ echo "### Install all dependencies..."
 apk add --no-cache gettext $SETUP_DEPENDENCIES_SETUP $SETUP_DEPENDENCIES_CONFIG $SETUP_DEPENDENCIES_RUNTIME
 
 
+# List php ext
+echo "### List php ext..."
+SETUP_PHP_EXTS="$( printenv | grep -e 'SETUP_PHP_EXT_[A-Z_]*_ENABLED=.*' | sed -E 's/SETUP_PHP_EXT_([A-Z_]+?)_ENABLED=.*?/\1/g' | awk '{print tolower($0)}' | xargs )";
+
 # Install ext if enabled
 echo "### Install ext if enabled..."
-for EXT in $SETUP_PHP_EXTS; do IS_ENABLED="$( echo "$SETUP_PHP_EXT_${EXT}_ENABLED" | envsubst)"; NEED_CONFIGURE="$( echo "$SETUP_PHP_EXT_${EXT}_CONFIGURE" | envsubst)"; IS_PECL="$( echo "$SETUP_PHP_EXT_${EXT}_PECL" | envsubst)"; if [ "$IS_ENABLED" = "$GENERAL_KEYS_TRUE" ]; then if [ "$IS_PECL" = "$GENERAL_KEYS_TRUE" ]; then PHP_EXT_PECL_TO_INSTALL="$PHP_EXT_TO_INSTALL $EXT"; else PHP_EXT_DEP_TO_INSTALL="$PHP_EXT_DEP_TO_INSTALL $EXT"; if [ "$NEED_CONFIGURE" = "$GENERAL_KEYS_TRUE" ]; then PHP_EXT_TO_CONFIGURE="$PHP_EXT_TO_CONFIGURE $EXT"; fi; PHP_EXT_TO_INSTALL="$PHP_EXT_TO_INSTALL $EXT"; fi fi done
+for EXT in $SETUP_PHP_EXTS; do UPPER_EXT="$(echo "$EXT" | awk '{print toupper($0)}')";
+IS_ENABLED="$( echo "\$SETUP_PHP_EXT_${UPPER_EXT}_ENABLED" | envsubst )"; APK_DEPS="$( echo "\$SETUP_PHP_EXT_${UPPER_EXT}_DEPENDENCIES" | envsubst )" NEED_CONFIGURE="$( echo "\$SETUP_PHP_EXT_${UPPER_EXT}_CONFIGURE" | envsubst )"; IS_PECL="$( echo "\$SETUP_PHP_EXT_${UPPER_EXT}_PECL" | envsubst )";
+if [ "$IS_ENABLED" = "$GENERAL_KEYS_TRUE" ]; then PHP_EXT_DEP_TO_INSTALL="$PHP_EXT_DEP_TO_INSTALL $APK_DEPS";
+if [ "$IS_PECL" = "$GENERAL_KEYS_TRUE" ]; then PHP_EXT_PECL_TO_INSTALL="$PHP_EXT_PECL_TO_INSTALL $EXT"; elif [ "$IS_CUSTOM" = "$GENERAL_KEYS_TRUE" ]; then PHP_EXT_CUSTOM="$PHP_EXT_CUSTOM $EXT"; else if [ "$NEED_CONFIGURE" = "$GENERAL_KEYS_TRUE" ]; then PHP_EXT_TO_CONFIGURE="$PHP_EXT_TO_CONFIGURE $EXT"; fi; PHP_EXT_TO_INSTALL="$PHP_EXT_TO_INSTALL $EXT"; fi fi done
 
-# Install dep
-echo "### Install dep..."
+# Install enabled ext dependencies..
+echo "### Install enabled ext dependencies....."
 if [  ! -z "$PHP_EXT_DEP_TO_INSTALL"  ]; then
-    APK_DEPS="";
-    for EXT in $PHP_EXT_DEP_TO_INSTALL; do APK_DEPS="$APK_DEPS $( echo "$SETUP_PHP_EXT_${EXT}_DEPENDENCIES" | envsubst)"; done;
-    apk --no-cache add $APK_DEPS;
+    apk --no-cache add $PHP_EXT_DEP_TO_INSTALL;
 fi
 # Configure php ext
 echo "### Configure php ext..."
 if [  ! -z "$PHP_EXT_TO_CONFIGURE"  ]; then
-    for EXT in $PHP_EXT_TO_CONFIGURE; do CONFIG_ARGS="$( echo "$SETUP_PHP_EXT_${EXT}_CONFIG_ARGS" | envsubst )"; docker-php-ext-configure $EXT $CONFIG_ARGS; done;
+    for EXT in $PHP_EXT_TO_CONFIGURE; do UPPER_EXT="$(echo "$EXT" | awk '{print toupper($0)}')" CONFIGURE_ARG="$( echo "\$SETUP_PHP_EXT_${UPPER_EXT}_CONFIGURE_ARG" | envsubst )"; echo "### Configuring extension ${EXT} with args ${CONFIGURE_ARG}..."; docker-php-ext-configure $EXT $CONFIGURE_ARG; done;
 fi
 # Install php ext enabled 
 echo "### Install php ext enabled ..."
 if [  ! -z "$PHP_EXT_TO_INSTALL"  ]; then
+    echo "### Installing extensions ${PHP_EXT_TO_INSTALL}...";
     docker-php-ext-install $PHP_EXT_TO_INSTALL;
 fi
 # Install php pecl extentions enabled 
 echo "### Install php pecl extentions enabled ..."
 if [  ! -z "$PHP_EXT_PECL_TO_INSTALL"  ]; then
-    for EXT in $PHP_EXT_PECL_TO_INSTALL; do VERSION="$( echo "$SETUP_PHP_EXT_${EXT}_VERSION" | envsubst )"; pecl install "${EXT}${VERSION}"; done;
+    for EXT in $PHP_EXT_PECL_TO_INSTALL; do UPPER_EXT="$(echo "$EXT" | awk '{print toupper($0)}')" VERSION="$( echo "\$SETUP_PHP_EXT_${UPPER_EXT}_VERSION" | envsubst )"; echo "### Installing pecl extension ${EXT}..."; pecl install "${EXT}${VERSION}"; done;
 fi
+
+# Remove unecessary dependencies
+echo "### Remove unecessary dependencies..."
+echo "$SETUP_DEPENDENCIES_SETUP" | tr ' ' "\n" > /tmp/A
+echo "$SETUP_DEPENDENCIES_CONFIG $SETUP_DEPENDENCIES_RUNTIME" | tr ' ' "\n"  > /tmp/B
+UNNECESSARY_DEPENDENDCY_SETUP=$( grep -Fxv -f /tmp/B /tmp/A | xargs )
+rm -f /tmp/A /tmp/B
+apk del --no-cache $UNNECESSARY_DEPENDENDCY_SETUP
 
 
 
